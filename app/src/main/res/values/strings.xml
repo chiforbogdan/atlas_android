@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">atlas_android</string>
+    <string name="ClaimTabTitle">Gateway data</string>
+    <string name="hintIP">Insert IP</string>
+    <string name="hintCode">Insert code</string>
+    <string name="claimButton">Claim</string>
+</resources>
