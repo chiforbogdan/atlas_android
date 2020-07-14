@@ -90,7 +90,7 @@ public class AtlasGatewayAdapter extends RecyclerView.Adapter<AtlasGatewayAdapte
             alias.setText(gateway.getAlias());
             identity.setText(gateway.getIdentity());
             psk.setText(gateway.getPsk());
-//            keepAliveCounter.setText(gateway.getKeepAliveCounter());
+            keepAliveCounter.setText(Integer.toString(gateway.getKeepAliveCounter()));
             lastRegisteredTime.setText(gateway.getLastRegisteredTime());
             lastKeepAlive.setText(gateway.getLastKeepAlive());
 

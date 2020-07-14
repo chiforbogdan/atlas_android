@@ -44,7 +44,7 @@ public class Tab3 extends Fragment {
 
         List<AtlasGateway> gatewayList = new ArrayList<>();
         gatewayList.add(new AtlasGateway("Gateway 1", "82862241-e261-41e8-b627-869892197894", "Jx6EP9rRdngzMvsr4sZE4FjWVninAM3JAlqiJHZcwtM=", 3, "21.04.2020", "22.09.2020"));
-        gatewayList.add(new AtlasGateway("Gateway 2", "82862241-e261-41e8-b627-869892197894", "Jx6EP9rRdngzMvsr4sZE4FjWVninAM3JAlqiJHZcwtM=", 3, "21.04.2020", "ddd"));
+        gatewayList.add(new AtlasGateway("Gateway 2", "82862241-e261-41e8-b627-869892197894", "Jx6EP9rRdngzMvsr4sZE4FjWVninAM3JAlqiJHZcwtM=", 3, "21.04.2020", "11.04.1995"));
         gatewayList.get(0).setRegistered(true);
 
         atlasGatewayAdapter = new AtlasGatewayAdapter(gatewayList);

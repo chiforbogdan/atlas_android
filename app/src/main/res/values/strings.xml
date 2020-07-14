@@ -4,4 +4,9 @@
     <string name="hintIP">Insert IP</string>
     <string name="hintCode">Insert code</string>
     <string name="claimButton">Claim</string>
+    <string name="identity">"Identity: "</string>
+    <string name="psk">"PSK: "</string>
+    <string name="lastRegisteredTime">"Last registered time: "</string>
+    <string name="lastKeepAlive">"Last keep-alive time: "</string>
+    <string name="keepAliveCounter">"Keep-alive counter: "</string>
 </resources>
