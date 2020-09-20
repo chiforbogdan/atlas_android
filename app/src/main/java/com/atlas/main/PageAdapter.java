@@ -1,4 +1,4 @@
-package com.atlas_android.main;
+package com.atlas.main;
 
 import java.util.ArrayList;
 import java.util.List;

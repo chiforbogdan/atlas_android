@@ -1,8 +1,8 @@
-package com.atlas_android.main;
+package com.atlas.main;
 
 import android.os.Bundle;
 
-import com.atlas_android.R;
+import com.atlas.R;
 import com.google.android.material.tabs.TabLayout;
 
 import androidx.appcompat.app.AppCompatActivity;

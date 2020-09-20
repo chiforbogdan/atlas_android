@@ -1,4 +1,4 @@
-package com.atlas_android.gateway;
+package com.atlas.gateway;
 
 public class AtlasGateway {
 

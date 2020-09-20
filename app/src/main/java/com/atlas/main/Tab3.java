@@ -1,4 +1,4 @@
-package com.atlas_android.main;
+package com.atlas.main;
 
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -6,9 +6,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.atlas_android.R;
-import com.atlas_android.gateway.AtlasGateway;
-import com.atlas_android.gateway.AtlasGatewayAdapter;
+import com.atlas.gateway.AtlasGateway;
+import com.atlas.gateway.AtlasGatewayAdapter;
+import com.atlas.R;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -46,7 +46,7 @@
         android:background="@drawable/text_editor" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/claimButton"
         android:layout_width="180dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
