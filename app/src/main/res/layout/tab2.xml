@@ -2,48 +2,48 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/white">
+    android:background="@color/white"
+    android:orientation="vertical">
 
     <ImageView
         android:layout_width="270dp"
         android:layout_height="180dp"
-        android:src="@drawable/claim"
-        android:layout_marginTop="40dp"
         android:layout_gravity="center_horizontal"
-        android:scaleType="fitXY" />
+        android:layout_marginTop="40dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/claim" />
 
     <EditText
-        android:id="@+id/editTextTextPersonName"
+        android:id="@+id/serverIp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
         android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp"
         android:layout_marginTop="55dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/text_editor"
         android:ems="10"
         android:hint="@string/hintIP"
-        android:inputType="textPersonName"
-        android:textAlignment="center"
         android:importantForAutofill="no"
+        android:inputType="textPersonName"
         android:padding="10dp"
-        android:background="@drawable/text_editor" />
+        android:textAlignment="center" />
 
     <EditText
-        android:id="@+id/editTextNumberPassword"
+        android:id="@+id/shortCode"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="15dp"
         android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp"
         android:layout_marginTop="5dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginBottom="15dp"
+        android:background="@drawable/text_editor"
         android:ems="10"
         android:hint="@string/hintCode"
-        android:inputType="numberPassword"
-        android:textAlignment="center"
         android:importantForAutofill="no"
+        android:inputType="textPassword"
         android:padding="10dp"
-        android:background="@drawable/text_editor" />
+        android:textAlignment="center" />
 
     <Button
         android:id="@+id/claimButton"
@@ -51,17 +51,17 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="30dp"
-        android:textColor="@color/white"
         android:background="@drawable/button"
-        android:text="@string/claimButton"/>
+        android:text="@string/claimButton"
+        android:textColor="@color/white" />
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="15dp"
-        android:textStyle="italic"
+        android:text="Note! The code can be seen in the right corner of the device. Something about reset maybe??"
         android:textAlignment="center"
-        android:text="Note! The code can be seen in the right corner of the device. Something about reset maybe??" />
+        android:textStyle="italic" />
 
 </LinearLayout>
