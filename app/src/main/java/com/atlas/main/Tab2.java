@@ -1,6 +1,7 @@
 package com.atlas.main;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,11 +12,20 @@ import android.widget.Toast;
 import com.atlas.R;
 import com.atlas.claim.AtlasClaim;
 import com.atlas.claim.AtlasClaimJson;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import java.util.Objects;
+
 public class Tab2 extends Fragment {
+
+    private static final String TAG = "Tab2.java";
 
     private final String ATLAS_CLAIM_REQUEST_PROTOCOL = "https";
     //private final String ATLAS_CLAIM_REQUEST_SERVER = "192.168.100.9";
@@ -42,16 +52,30 @@ public class Tab2 extends Fragment {
                     return;
                 }
 
-                AtlasClaim atlasClaim = null;
-                try {
-                    atlasClaim = new AtlasClaim(new AtlasClaimJson(shortCode.getText().toString(), "key", "identity"), getContext());
+                FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(
+                        new OnCompleteListener<InstanceIdResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                                try {
+                                    if (!task.isSuccessful()) {
+                                        Log.e(TAG, "Failed to get token from firebase", task.getException());
+                                        throw Objects.requireNonNull(task.getException());
+                                    }
+                                    /* Owner ID */
+                                    String ownerID = Objects.requireNonNull(task.getResult()).getId();
+                                    Log.w(TAG, "Owner ID is " + ownerID);
 
-                    String urlClaim = ATLAS_CLAIM_REQUEST_PROTOCOL + "://" + serverPath.getText().toString() + ATLAS_CLAIM_REQUEST_PATH;
+                                    AtlasClaim atlasClaim = null;
+                                    atlasClaim = new AtlasClaim(new AtlasClaimJson(shortCode.getText().toString(), "key", ownerID), getContext());
+                                    String urlClaim = ATLAS_CLAIM_REQUEST_PROTOCOL + "://" + serverPath.getText().toString() + ATLAS_CLAIM_REQUEST_PATH;
+                                    atlasClaim.execute(urlClaim);
 
-                    atlasClaim.execute(urlClaim);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }
+                );
             }
         });
 

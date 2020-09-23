@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "17756850742",
+    "firebase_url": "https://atlasapp-ec98b.firebaseio.com",
+    "project_id": "atlasapp-ec98b",
+    "storage_bucket": "atlasapp-ec98b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:17756850742:android:3fd481deb1d4dfeb41a697",
+        "android_client_info": {
+          "package_name": "com.atlas_android"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "17756850742-v8osfnh7hmmasf1hsrushtvefa6itgfn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDZBJJ3RoNBs7LLosvcvdb2rREO6hZr2cU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "17756850742-v8osfnh7hmmasf1hsrushtvefa6itgfn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
