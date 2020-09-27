@@ -14,7 +14,7 @@
         android:src="@drawable/claim" />
 
     <EditText
-        android:id="@+id/serverIp"
+        android:id="@+id/gateway_ip_port_edit_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="30dp"
@@ -30,7 +30,23 @@
         android:textAlignment="center" />
 
     <EditText
-        android:id="@+id/shortCode"
+        android:id="@+id/gateway_short_code_edit_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginBottom="15dp"
+        android:background="@drawable/text_editor"
+        android:ems="10"
+        android:hint="@string/hintCode"
+        android:importantForAutofill="no"
+        android:inputType="textPassword"
+        android:padding="10dp"
+        android:textAlignment="center" />
+
+    <EditText
+        android:id="@+id/gateway_alias_edit_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="30dp"

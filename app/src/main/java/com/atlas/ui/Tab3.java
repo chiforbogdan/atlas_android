@@ -1,4 +1,4 @@
-package com.atlas.main;
+package com.atlas.ui;
 
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;

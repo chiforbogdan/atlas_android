@@ -16,6 +16,9 @@ public interface AtlasGatewayEntityDao {
     @Query("SELECT * FROM AtlasGatewayEntity")
     List<AtlasGatewayEntity> selectAll();
 
+    @Query("SELECT * FROM AtlasGatewayEntity WHERE gateway_alias = :aliasValue")
+    AtlasGatewayEntity selectByAlias(String aliasValue);
+
     @Insert
     void insertGateway(AtlasGatewayEntity gateway);
 

@@ -1,4 +1,4 @@
-package com.atlas.main;
+package com.atlas.ui;
 
 import java.util.ArrayList;
 import java.util.List;

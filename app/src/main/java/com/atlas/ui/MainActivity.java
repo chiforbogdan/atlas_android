@@ -1,8 +1,9 @@
-package com.atlas.main;
+package com.atlas.ui;
 
 import android.os.Bundle;
 
 import com.atlas.R;
+import com.atlas.ui.gateway_claim.AtlasClaimView;
 import com.google.android.material.tabs.TabLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -36,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
     private void setupViewPager(ViewPager viewPager) {
         PageAdapter adapter = new PageAdapter(getSupportFragmentManager());
         adapter.addFragment(new Tab1(), "Home");
-        adapter.addFragment(new ClaimGateway(), "Claim");
+        adapter.addFragment(new AtlasClaimView(), "Claim");
         adapter.addFragment(new Tab3(), "Gateways");
         viewPager.setAdapter(adapter);
     }
