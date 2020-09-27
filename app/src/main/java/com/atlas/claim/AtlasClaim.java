@@ -6,113 +6,43 @@ import android.util.Log;
 import android.widget.Toast;
 
 
-import com.atlas.R;
-import com.atlas.utils.Converter;
+import com.atlas.database.AtlasDatabase;
+import com.atlas.model.AtlasGatewayEntity;
+import com.atlas.model.dto.AtlasGatewayClaimReq;
+import com.atlas.model.dto.AtlasGatewayClaimResp;
+import com.atlas.networking.AtlasGatewayClaimAPI;
+import com.atlas.networking.AtlasNetworkAPIFactory;
 
-import org.apache.commons.io.IOUtils;
-import org.conscrypt.Conscrypt;
-
-import java.io.InputStream;
-import java.nio.charset.Charset;
-import java.security.KeyStore;
-import java.security.SecureRandom;
-import java.security.Security;
-import java.security.cert.Certificate;
-import java.security.cert.CertificateException;
-import java.security.cert.CertificateFactory;
-import java.security.cert.X509Certificate;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
-import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSession;
-import javax.net.ssl.SSLSocketFactory;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.TrustManagerFactory;
-import javax.net.ssl.X509TrustManager;
-
-import okhttp3.ConnectionSpec;
-import okhttp3.MediaType;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
+import retrofit2.Response;
 
 public class AtlasClaim extends AsyncTask<String, Void, String> {
 
-    private OkHttpClient client;
-    private final MediaType jsonType = MediaType.get("application/json; charset=utf-8");
-    private AtlasClaimJson claimJson;
+    private AtlasGatewayClaimReq claimReq;
     private Context context;
 
-    private OkHttpClient createOkHttpClient () throws Exception {
-        TrustManager[] trustAllCerts       = new TrustManager [] { trustManager () };
 
-        SSLContext sslContext               = SSLContext.getInstance ("SSL");
-        sslContext.init (null, trustAllCerts, new SecureRandom ());
-
-        SSLSocketFactory sslSocketFactory   = sslContext.getSocketFactory ();
-
-        OkHttpClient.Builder builder        = new OkHttpClient.Builder ();
-        builder.sslSocketFactory (sslSocketFactory, (X509TrustManager)trustAllCerts [0]);
-        builder.hostnameVerifier (hostnameVerifier ());
-
-        return builder.build ();
-    }
-
-    private static TrustManager trustManager () {
-        return new X509TrustManager () {
-
-            @Override
-            public void checkClientTrusted(X509Certificate[] x509Certificates, String s) throws CertificateException {
-
-            }
-
-            @Override
-            public void checkServerTrusted (X509Certificate[] chain, String authType) throws CertificateException {  }
-
-            @Override
-            public X509Certificate [] getAcceptedIssuers () {
-                return new X509Certificate [] {  };
-            }
-        };
-    }
-
-    private static HostnameVerifier hostnameVerifier () {
-        return new HostnameVerifier () {
-
-            @Override
-            public boolean verify (String hostname, SSLSession session) {
-                return true;
-            }
-        };
-    }
-
-    public AtlasClaim(AtlasClaimJson json, Context context) throws Exception {
-        Security.insertProviderAt(Conscrypt.newProvider(), 1);
+    public AtlasClaim(AtlasGatewayClaimReq req, Context context) throws Exception {
         this.context = context;
-        this.claimJson = json;
-        this.client = createOkHttpClient();
+        this.claimReq = req;
     }
 
     @Override
     protected String doInBackground(String... urls) {
 
         Log.d(AtlasClaim.class.getName(), "Execute claim request to URL1111:" + urls[0]);
-        RequestBody body = RequestBody.create(claimJson.getJson(), jsonType);
-
-        Request.Builder builder = new Request.Builder();
-        builder.url(urls[0]);
-        builder.post(body);
-
-        Request request = builder.build();
         try {
-            Response response = client.newCall(request).execute();
-            String responseValue = response.body().string();
-            Log.d(AtlasClaim.class.getName(), "Claim response is: " + responseValue);
-            return responseValue;
+            AtlasGatewayClaimAPI gatewayClaimAPI = AtlasNetworkAPIFactory.createGatewayClaimAPI(urls[0]);
+            Response<AtlasGatewayClaimResp> claimResp = gatewayClaimAPI.claimGateway(claimReq).execute();
+            Log.e(AtlasClaim.class.getName(), "Resp: " + claimResp.code() + " gg: " + claimResp.body());
+            AtlasGatewayEntity gateway = new AtlasGatewayEntity();
+            gateway.setIdentity(claimResp.body().getIdentity());
+            gateway.setAlias("alias");
+            AtlasDatabase.getInstance(context).gatewayEntityDao().insertGateway(gateway);
+
+            List<AtlasGatewayEntity> gateways = AtlasDatabase.getInstance(context).gatewayEntityDao().selectAll();
+            gateways.forEach(gw -> Log.d(AtlasClaim.class.getName(), "GW:" + gw.getIdentity()));
         } catch (Exception e) {
             Log.e(AtlasClaim.class.getName(), "Claim request exception: " + e.getMessage());
             e.printStackTrace();

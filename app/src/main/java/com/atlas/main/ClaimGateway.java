@@ -12,6 +12,7 @@ import android.widget.Toast;
 import com.atlas.R;
 import com.atlas.claim.AtlasClaim;
 import com.atlas.claim.AtlasClaimJson;
+import com.atlas.model.dto.AtlasGatewayClaimReq;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.iid.FirebaseInstanceId;
@@ -64,9 +65,9 @@ public class ClaimGateway extends Fragment {
                                     String ownerID = Objects.requireNonNull(task.getResult()).getId();
                                     Log.w(ClaimGateway.class.getName(), "Owner ID is " + ownerID);
 
-                                    AtlasClaim atlasClaim = null;
-                                    atlasClaim = new AtlasClaim(new AtlasClaimJson(shortCode.getText().toString(), "key", ownerID), getContext());
-                                    String urlClaim = ATLAS_CLAIM_REQUEST_PROTOCOL + "://" + serverPath.getText().toString() + ATLAS_CLAIM_REQUEST_PATH;
+                                    AtlasGatewayClaimReq claimReq = new AtlasGatewayClaimReq(shortCode.getText().toString(), "key", ownerID);
+                                    AtlasClaim atlasClaim = new AtlasClaim(claimReq, getContext());
+                                    String urlClaim = ATLAS_CLAIM_REQUEST_PROTOCOL + "://" + serverPath.getText().toString() + "/";
                                     atlasClaim.execute(urlClaim);
 
                                 } catch (Exception e) {
