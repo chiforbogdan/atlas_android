@@ -2,6 +2,7 @@ package com.atlas.claim;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.widget.Toast;
 
 
@@ -9,20 +10,30 @@ import com.atlas.R;
 import com.atlas.utils.Converter;
 
 import org.apache.commons.io.IOUtils;
+import org.conscrypt.Conscrypt;
 
 import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.security.KeyStore;
 import java.security.SecureRandom;
+import java.security.Security;
 import java.security.cert.Certificate;
+import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
+import java.security.cert.X509Certificate;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSession;
+import javax.net.ssl.SSLSocketFactory;
+import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.X509TrustManager;
 
+import okhttp3.ConnectionSpec;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -36,58 +47,60 @@ public class AtlasClaim extends AsyncTask<String, Void, String> {
     private AtlasClaimJson claimJson;
     private Context context;
 
-    private void setSslContext(Context context) throws Exception {
-        KeyStore ks = KeyStore.getInstance(KeyStore.getDefaultType());
-        ks.load(null, null);
+    private OkHttpClient createOkHttpClient () throws Exception {
+        TrustManager[] trustAllCerts       = new TrustManager [] { trustManager () };
 
-        InputStream is = context.getResources().openRawResource(R.raw.server);
-        String certificate = Converter.convertStreamToString(is);
+        SSLContext sslContext               = SSLContext.getInstance ("SSL");
+        sslContext.init (null, trustAllCerts, new SecureRandom ());
 
-        InputStream stream = IOUtils.toInputStream(certificate, Charset.defaultCharset());
+        SSLSocketFactory sslSocketFactory   = sslContext.getSocketFactory ();
 
-        // CertificateFactory
-        CertificateFactory cf = CertificateFactory.getInstance("X.509");
-        // certificate
-        Certificate ca;
-        try {
-            ca = cf.generateCertificate(stream);
-        } finally {
-            is.close();
-        }
+        OkHttpClient.Builder builder        = new OkHttpClient.Builder ();
+        builder.sslSocketFactory (sslSocketFactory, (X509TrustManager)trustAllCerts [0]);
+        builder.hostnameVerifier (hostnameVerifier ());
 
-        ks.setCertificateEntry("my-ca", ca);
+        return builder.build ();
+    }
 
-        /* TrustManagerFactory */
-        String algorithm = TrustManagerFactory.getDefaultAlgorithm();
-        TrustManagerFactory tmf = TrustManagerFactory.getInstance(algorithm);
-        /* Create a TrustManager that trusts the CAs in our KeyStore */
-        tmf.init(ks);
+    private static TrustManager trustManager () {
+        return new X509TrustManager () {
 
-        /* Create a SSLContext with the certificate that uses tmf (TrustManager) */
-        SSLContext sslContext = SSLContext.getInstance("TLS");
-        sslContext.init(null, tmf.getTrustManagers(), new SecureRandom());
+            @Override
+            public void checkClientTrusted(X509Certificate[] x509Certificates, String s) throws CertificateException {
 
-        client = new OkHttpClient.Builder()
-                .sslSocketFactory(sslContext.getSocketFactory(), (X509TrustManager) tmf.getTrustManagers()[0])
-                .hostnameVerifier(new HostnameVerifier() {
-                    @Override
-                    public boolean verify(String hostname, SSLSession session) {
-                        return true;
-                    }
-                })
-                .build();
+            }
+
+            @Override
+            public void checkServerTrusted (X509Certificate[] chain, String authType) throws CertificateException {  }
+
+            @Override
+            public X509Certificate [] getAcceptedIssuers () {
+                return new X509Certificate [] {  };
+            }
+        };
+    }
+
+    private static HostnameVerifier hostnameVerifier () {
+        return new HostnameVerifier () {
+
+            @Override
+            public boolean verify (String hostname, SSLSession session) {
+                return true;
+            }
+        };
     }
 
     public AtlasClaim(AtlasClaimJson json, Context context) throws Exception {
-
+        Security.insertProviderAt(Conscrypt.newProvider(), 1);
         this.context = context;
         this.claimJson = json;
-        setSslContext(context);
+        this.client = createOkHttpClient();
     }
 
     @Override
     protected String doInBackground(String... urls) {
 
+        Log.d(AtlasClaim.class.getName(), "Execute claim request to URL1111:" + urls[0]);
         RequestBody body = RequestBody.create(claimJson.getJson(), jsonType);
 
         Request.Builder builder = new Request.Builder();
@@ -97,8 +110,11 @@ public class AtlasClaim extends AsyncTask<String, Void, String> {
         Request request = builder.build();
         try {
             Response response = client.newCall(request).execute();
-            return response.body().string();
+            String responseValue = response.body().string();
+            Log.d(AtlasClaim.class.getName(), "Claim response is: " + responseValue);
+            return responseValue;
         } catch (Exception e) {
+            Log.e(AtlasClaim.class.getName(), "Claim request exception: " + e.getMessage());
             e.printStackTrace();
         }
 

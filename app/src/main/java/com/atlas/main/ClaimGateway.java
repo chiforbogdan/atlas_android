@@ -23,9 +23,7 @@ import androidx.fragment.app.Fragment;
 
 import java.util.Objects;
 
-public class Tab2 extends Fragment {
-
-    private static final String TAG = "Tab2.java";
+public class ClaimGateway extends Fragment {
 
     private final String ATLAS_CLAIM_REQUEST_PROTOCOL = "https";
     //private final String ATLAS_CLAIM_REQUEST_SERVER = "192.168.100.9";
@@ -56,14 +54,15 @@ public class Tab2 extends Fragment {
                         new OnCompleteListener<InstanceIdResult>() {
                             @Override
                             public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                                Log.d(ClaimGateway.class.getName(), "Claim gateway");
                                 try {
                                     if (!task.isSuccessful()) {
-                                        Log.e(TAG, "Failed to get token from firebase", task.getException());
+                                        Log.e(ClaimGateway.class.getName(), "Failed to get token from firebase", task.getException());
                                         throw Objects.requireNonNull(task.getException());
                                     }
                                     /* Owner ID */
                                     String ownerID = Objects.requireNonNull(task.getResult()).getId();
-                                    Log.w(TAG, "Owner ID is " + ownerID);
+                                    Log.w(ClaimGateway.class.getName(), "Owner ID is " + ownerID);
 
                                     AtlasClaim atlasClaim = null;
                                     atlasClaim = new AtlasClaim(new AtlasClaimJson(shortCode.getText().toString(), "key", ownerID), getContext());
