@@ -6,7 +6,6 @@ import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
 
-import com.atlas.gateway.AtlasGateway;
 import com.atlas.model.AtlasGatewayEntity;
 
 import java.util.List;

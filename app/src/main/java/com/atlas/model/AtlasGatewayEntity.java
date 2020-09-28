@@ -20,7 +20,14 @@ public class AtlasGatewayEntity {
     @ColumnInfo(name = "gateway_secret_key")
     private String secretKey;
 
-    public AtlasGatewayEntity() {}
+    public AtlasGatewayEntity() {
+    }
+
+    public AtlasGatewayEntity(String identity, String alias, String secretKey) {
+        this.identity = identity;
+        this.alias = alias;
+        this.secretKey = secretKey;
+    }
 
     public AtlasGatewayEntity(Long id, String identity, String alias, String secretKey) {
         this.id = id;
@@ -41,7 +48,9 @@ public class AtlasGatewayEntity {
         return alias;
     }
 
-    public String getSecretKey() { return secretKey; }
+    public String getSecretKey() {
+        return secretKey;
+    }
 
     public void setId(Long id) {
         this.id = id;

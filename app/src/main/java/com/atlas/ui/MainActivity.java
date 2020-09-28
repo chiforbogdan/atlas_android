@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import com.atlas.R;
 import com.atlas.ui.gateway_claim.AtlasClaimView;
+import com.atlas.ui.gateway_list.AtlasGatewayListView;
 import com.google.android.material.tabs.TabLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,7 +18,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        // Make sure this is before calling super.onCreate
         setTheme(R.style.AppTheme);
 
         super.onCreate(savedInstanceState);
@@ -38,9 +38,7 @@ public class MainActivity extends AppCompatActivity {
         PageAdapter adapter = new PageAdapter(getSupportFragmentManager());
         adapter.addFragment(new Tab1(), "Home");
         adapter.addFragment(new AtlasClaimView(), "Claim");
-        adapter.addFragment(new Tab3(), "Gateways");
+        adapter.addFragment(new AtlasGatewayListView(), "Gateways");
         viewPager.setAdapter(adapter);
     }
-
-
 }

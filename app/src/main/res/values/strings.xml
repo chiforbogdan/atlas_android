@@ -9,4 +9,6 @@
     <string name="lastRegisteredTime">"Last registered time: "</string>
     <string name="lastKeepAlive">"Last keep-alive time: "</string>
     <string name="keepAliveCounter">"Keep-alive counter: "</string>
+    <string name="stringFormat">"%s"</string>
+    <string name="loadingGateways">"Gateway List is loading ..."</string>
 </resources>
