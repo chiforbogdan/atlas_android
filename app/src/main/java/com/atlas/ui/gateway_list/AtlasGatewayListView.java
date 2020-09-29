@@ -36,12 +36,6 @@ public class AtlasGatewayListView extends Fragment {
 
         atlasGatewayAdapter = new AtlasGatewayAdapter(gatewayClickCallback);
 
-        /* Set divider between items */
-        DividerItemDecoration horizontalDecoration = new DividerItemDecoration(binding.gatewaysView.getContext(), DividerItemDecoration.VERTICAL);
-        Drawable horizontalDivider = ContextCompat.getDrawable(getActivity(), R.drawable.line_divider);
-        horizontalDecoration.setDrawable(horizontalDivider);
-        binding.gatewaysView.addItemDecoration(horizontalDecoration);
-
         ((SimpleItemAnimator) binding.gatewaysView.getItemAnimator()).setSupportsChangeAnimations(false);
         binding.gatewaysView.setLayoutManager(new LinearLayoutManager(inflater.getContext()));
         binding.gatewaysView.setHasFixedSize(true);
