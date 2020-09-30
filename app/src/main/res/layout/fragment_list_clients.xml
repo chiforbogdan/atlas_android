@@ -8,7 +8,7 @@
     </data>
 
     <FrameLayout
-        android:id="@+id/gateway_list_fragment"
+        android:id="@+id/fragment_list_clients"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@android:color/white">
@@ -22,12 +22,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center_vertical|center_horizontal"
-                android:text="@string/loadingGateways"
+                android:text="@string/loadingClients"
                 android:textAlignment="center"
                 app:visibility="@{isLoading? View.VISIBLE : View.GONE }" />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/gateways_view"
+                android:id="@+id/clients_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:divider="#673AB7"

@@ -1,6 +1,5 @@
 package com.atlas.ui.gateway_list;
 
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -9,22 +8,22 @@ import android.view.ViewGroup;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.SimpleItemAnimator;
 
 import com.atlas.R;
 import com.atlas.databinding.FragmentListGatewaysBinding;
 import com.atlas.model.AtlasGatewayEntity;
+import com.atlas.ui.MainActivity;
 
 import java.util.List;
 
-public class AtlasGatewayListView extends Fragment {
+public class AtlasGatewayListView extends BackStackFragment {
 
     private AtlasGatewayAdapter atlasGatewayAdapter;
     private FragmentListGatewaysBinding binding;
@@ -74,10 +73,21 @@ public class AtlasGatewayListView extends Fragment {
         });
     }
 
+    public void replaceFragment(Fragment fragment) {
+        getChildFragmentManager()
+                .beginTransaction()
+                .replace(((ViewGroup) getView()).getId(), fragment)
+                .addToBackStack(null)
+                .commit();
+    }
+
     private final GatewayClickCallback gatewayClickCallback = new GatewayClickCallback() {
         @Override
         public void onCLick(AtlasGatewayEntity gateway) {
-            Log.w(this.getClass().toString(),"Click on gateway element");
+            Log.w(this.getClass().toString(), "Click on gateway element");
+            if (getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.STARTED)) {
+                ((MainActivity) getActivity()).openAtlasClientListFragment(gateway);
+            }
         }
     };
 }

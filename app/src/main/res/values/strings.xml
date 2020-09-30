@@ -10,5 +10,6 @@
     <string name="lastKeepAlive">"Last keep-alive time: "</string>
     <string name="keepAliveCounter">"Keep-alive counter: "</string>
     <string name="stringFormat">"%s"</string>
-    <string name="loadingGateways">"Gateway List is loading ..."</string>
+    <string name="loadingGateways">"Gateway List is loading …"</string>
+    <string name="loadingClients">"Client List is loading …"</string>
 </resources>

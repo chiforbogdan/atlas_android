@@ -3,8 +3,11 @@ package com.atlas.ui;
 import android.os.Bundle;
 
 import com.atlas.R;
+import com.atlas.model.AtlasGatewayEntity;
+import com.atlas.ui.client_list.AtlasClientListView;
 import com.atlas.ui.gateway_claim.AtlasClaimView;
 import com.atlas.ui.gateway_list.AtlasGatewayListView;
+import com.atlas.ui.gateway_list.BackStackFragment;
 import com.google.android.material.tabs.TabLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,6 +17,7 @@ public class MainActivity extends AppCompatActivity {
 
     private TabLayout tabLayout;
     private ViewPager viewPager;
+    private PageAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,10 +39,23 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupViewPager(ViewPager viewPager) {
-        PageAdapter adapter = new PageAdapter(getSupportFragmentManager());
+        adapter = new PageAdapter(getSupportFragmentManager());
         adapter.addFragment(new Tab1(), "Home");
         adapter.addFragment(new AtlasClaimView(), "Claim");
         adapter.addFragment(new AtlasGatewayListView(), "Gateways");
+        viewPager.setOffscreenPageLimit(2);
         viewPager.setAdapter(adapter);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (!BackStackFragment.handleBackPressed(getSupportFragmentManager())) {
+            super.onBackPressed();
+        }
+    }
+
+    public void openAtlasClientListFragment(AtlasGatewayEntity gateway) {
+        AtlasGatewayListView gatewayListFragment = (AtlasGatewayListView) adapter.getItem(viewPager.getCurrentItem());
+        gatewayListFragment.replaceFragment(AtlasClientListView.getInstance(gateway.getIdentity()));
     }
 }
