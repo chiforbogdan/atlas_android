@@ -1,4 +1,4 @@
-package com.atlas.ui.client_list;
+package com.atlas.ui.client_list.adapter;
 
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -12,11 +12,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.atlas.R;
 import com.atlas.databinding.ClientItemBinding;
 import com.atlas.model.AtlasClientEntity;
+import com.atlas.ui.client_list.callback.ClientClickCallback;
 
 import java.util.List;
 
 public class AtlasClientAdapter extends RecyclerView.Adapter<AtlasClientAdapter.ClientViewHolder> {
-
 
     private List<AtlasClientEntity> clientList;
 

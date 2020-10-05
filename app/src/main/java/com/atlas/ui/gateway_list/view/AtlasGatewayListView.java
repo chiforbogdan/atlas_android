@@ -1,5 +1,7 @@
-package com.atlas.ui.gateway_list;
+package com.atlas.ui.gateway_list.view;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,7 +21,10 @@ import androidx.recyclerview.widget.SimpleItemAnimator;
 import com.atlas.R;
 import com.atlas.databinding.FragmentListGatewaysBinding;
 import com.atlas.model.AtlasGatewayEntity;
-import com.atlas.ui.MainActivity;
+import com.atlas.ui.main.MainActivity;
+import com.atlas.ui.gateway_list.viewmodel.AtlasGatewayListViewModel;
+import com.atlas.ui.gateway_list.callback.GatewayClickCallback;
+import com.atlas.ui.gateway_list.adapter.AtlasGatewayAdapter;
 
 import java.util.List;
 
@@ -86,7 +91,15 @@ public class AtlasGatewayListView extends BackStackFragment {
         public void onCLick(AtlasGatewayEntity gateway) {
             Log.w(this.getClass().toString(), "Click on gateway element");
             if (getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.STARTED)) {
-                ((MainActivity) getActivity()).openAtlasClientListFragment(gateway);
+
+                SharedPreferences sharedPreferences = getActivity().getSharedPreferences("OwnerIdentification", Context.MODE_PRIVATE);
+
+                if (sharedPreferences.contains("owner_identity")) {
+                    String ownerID = sharedPreferences.getString("owner_identity", "owner1");
+                    ((MainActivity) getActivity()).openAtlasClientListFragment(gateway, ownerID);
+                } else {
+                    Log.e(AtlasGatewayListView.class.getName(), "Owner is not set!");
+                }
             }
         }
     };

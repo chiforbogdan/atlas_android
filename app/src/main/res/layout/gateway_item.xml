@@ -4,7 +4,7 @@
 
     <data>
         <variable name="gateway" type="com.atlas.model.AtlasGatewayEntity" />
-        <variable name="callback" type="com.atlas.ui.gateway_list.GatewayClickCallback" />
+        <variable name="callback" type="com.atlas.ui.gateway_list.callback.GatewayClickCallback" />
     </data>
 
     <androidx.cardview.widget.CardView

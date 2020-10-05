@@ -1,4 +1,4 @@
-package com.atlas.ui.gateway_list;
+package com.atlas.ui.gateway_list.callback;
 
 
 import com.atlas.model.AtlasGatewayEntity;

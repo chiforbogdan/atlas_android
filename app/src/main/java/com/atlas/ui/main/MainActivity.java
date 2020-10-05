@@ -1,13 +1,14 @@
-package com.atlas.ui;
+package com.atlas.ui.main;
 
 import android.os.Bundle;
 
 import com.atlas.R;
 import com.atlas.model.AtlasGatewayEntity;
-import com.atlas.ui.client_list.AtlasClientListView;
+import com.atlas.ui.Tab1;
+import com.atlas.ui.client_list.view.AtlasClientListView;
 import com.atlas.ui.gateway_claim.AtlasClaimView;
-import com.atlas.ui.gateway_list.AtlasGatewayListView;
-import com.atlas.ui.gateway_list.BackStackFragment;
+import com.atlas.ui.gateway_list.view.AtlasGatewayListView;
+import com.atlas.ui.gateway_list.view.BackStackFragment;
 import com.google.android.material.tabs.TabLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -54,8 +55,8 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void openAtlasClientListFragment(AtlasGatewayEntity gateway) {
+    public void openAtlasClientListFragment(AtlasGatewayEntity gateway, String owner) {
         AtlasGatewayListView gatewayListFragment = (AtlasGatewayListView) adapter.getItem(viewPager.getCurrentItem());
-        gatewayListFragment.replaceFragment(AtlasClientListView.getInstance(gateway.getIdentity()));
+        gatewayListFragment.replaceFragment(AtlasClientListView.getInstance(gateway.getIdentity(), owner));
     }
 }

@@ -1,4 +1,4 @@
-package com.atlas.ui.gateway_list;
+package com.atlas.ui.gateway_list.viewmodel;
 
 import android.app.Application;
 import android.os.AsyncTask;
@@ -33,7 +33,6 @@ public class AtlasGatewayListViewModel extends AndroidViewModel {
                 return null;
             }
         }.execute();
-
     }
 
     public MutableLiveData<List<AtlasGatewayEntity>> getGatewayList() {

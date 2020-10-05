@@ -1,8 +1,11 @@
 package com.atlas.ui.gateway_claim;
 
 import android.app.Application;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.EdgeEffect;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -80,6 +83,12 @@ public class AtlasClaimViewModel extends AndroidViewModel {
                         String ownerID = Objects.requireNonNull(task.getResult()).getId();
                         Log.d(AtlasClaimViewModel.class.getName(), "Owner ID is " + ownerID);
 
+                        /* Save ownerID in shared preferences */
+                        SharedPreferences sharedPreferences = getApplication().getSharedPreferences("OwnerIdentification", Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.putString("owner_identity", ownerID);
+                        editor.apply();
+
                         /* Execute gateway claim request */
                         executeClaimReqAsync(ipPort, shortCode, alias, ownerID);
                     }
@@ -108,11 +117,11 @@ public class AtlasClaimViewModel extends AndroidViewModel {
             AtlasGatewayClaimAPI gatewayClaimAPI = AtlasNetworkAPIFactory.createGatewayClaimAPI(url);
             AtlasGatewayClaimReq claimReq = new AtlasGatewayClaimReq(shortCode, "secretKey", ownerIdentity);
             Response<AtlasGatewayClaimResp> claimResp = gatewayClaimAPI.claimGateway(claimReq).execute();
-           if (!claimResp.isSuccessful()) {
-               Log.e(AtlasClaimViewModel.class.getName(), "Gateway claim REST API is not successful");
-               claimedLiveData.postValue(false);
-               return;
-           }
+            if (!claimResp.isSuccessful()) {
+                Log.e(AtlasClaimViewModel.class.getName(), "Gateway claim REST API is not successful");
+                claimedLiveData.postValue(false);
+                return;
+            }
 
             /* Insert gateway into database */
             AtlasGatewayEntity gateway = new AtlasGatewayEntity();

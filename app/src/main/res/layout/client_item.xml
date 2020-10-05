@@ -4,7 +4,7 @@
 
     <data>
         <variable name="client" type="com.atlas.model.AtlasClientEntity" />
-        <variable name="callback" type="com.atlas.ui.client_list.ClientClickCallback" />
+        <variable name="callback" type="com.atlas.ui.client_list.callback.ClientClickCallback" />
     </data>
 
     <androidx.cardview.widget.CardView

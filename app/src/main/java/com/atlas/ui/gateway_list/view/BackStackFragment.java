@@ -1,4 +1,4 @@
-package com.atlas.ui.gateway_list;
+package com.atlas.ui.gateway_list.view;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;

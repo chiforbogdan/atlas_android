@@ -84,4 +84,18 @@ public class AtlasNetworkAPIFactory {
 
         return retrofit.create(AtlasGatewayClaimAPI.class);
     }
+
+    public static AtlasClientCommandAPI createClientCommandAPI(final String url) throws Exception {
+        Gson gson = new GsonBuilder()
+                .setLenient()
+                .create();
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(url)
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .client(unsafeOkHttpClient())
+                .build();
+
+        return retrofit.create(AtlasClientCommandAPI.class);
+    }
 }

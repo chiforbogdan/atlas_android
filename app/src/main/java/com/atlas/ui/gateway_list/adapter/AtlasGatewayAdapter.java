@@ -1,4 +1,4 @@
-package com.atlas.ui.gateway_list;
+package com.atlas.ui.gateway_list.adapter;
 
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import com.atlas.R;
 import com.atlas.databinding.GatewayItemBinding;
 import com.atlas.model.AtlasGatewayEntity;
+import com.atlas.ui.gateway_list.callback.GatewayClickCallback;
 
 import java.util.List;
 

@@ -3,6 +3,7 @@
     <string name="ClaimTabTitle">Gateway data</string>
     <string name="hintIP">Insert IP:PORT</string>
     <string name="hintCode">Insert code</string>
+    <string name="hintAlias">Insert alias</string>
     <string name="claimButton">Claim</string>
     <string name="identity">"Identity: "</string>
     <string name="psk">"PSK: "</string>

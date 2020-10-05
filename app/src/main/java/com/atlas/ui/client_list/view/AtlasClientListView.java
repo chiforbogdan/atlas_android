@@ -1,4 +1,4 @@
-package com.atlas.ui.client_list;
+package com.atlas.ui.client_list.view;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -18,6 +18,9 @@ import androidx.recyclerview.widget.SimpleItemAnimator;
 import com.atlas.R;
 import com.atlas.databinding.FragmentListClientsBinding;
 import com.atlas.model.AtlasClientEntity;
+import com.atlas.ui.client_list.adapter.AtlasClientAdapter;
+import com.atlas.ui.client_list.viewmodel.AtlasClientListViewModel;
+import com.atlas.ui.client_list.callback.ClientClickCallback;
 ;
 
 import java.util.List;
@@ -51,7 +54,7 @@ public class AtlasClientListView extends Fragment {
 
         AtlasClientListViewModel.Factory factory = new AtlasClientListViewModel
                 .Factory(getActivity()
-                .getApplication(), getArguments().getString("gateway_identity"));
+                .getApplication(), getArguments().getString("gateway_identity"), getArguments().getString("owner_identity"));
 
         final AtlasClientListViewModel viewModel = new ViewModelProvider(this, factory)
                 .get(AtlasClientListViewModel.class);
@@ -66,7 +69,7 @@ public class AtlasClientListView extends Fragment {
         viewModel.getClientList().observe(this, new Observer<List<AtlasClientEntity>>() {
             @Override
             public void onChanged(List<AtlasClientEntity> atlasClients) {
-                Log.w(this.getClass().toString(), "Client list changed!");
+                Log.w(AtlasClientListView.class.getName(), "Client list changed!");
                 if (atlasClients != null) {
                     binding.setIsLoading(false);
                     atlasClientAdapter.setClientList(atlasClients);
@@ -75,10 +78,13 @@ public class AtlasClientListView extends Fragment {
         });
     }
 
-    public static AtlasClientListView getInstance(String gatewayIdentity) {
+    public static AtlasClientListView getInstance(String gatewayIdentity, String ownerIdentity) {
+
+        Log.w(AtlasClientListView.class.getName(), "Get client list fragment for gateway:" + gatewayIdentity + " and owner " + ownerIdentity);
         AtlasClientListView fragment = new AtlasClientListView();
         Bundle args = new Bundle();
         args.putString("gateway_identity", gatewayIdentity);
+        args.putString("owner_identity", ownerIdentity);
         fragment.setArguments(args);
 
         return fragment;

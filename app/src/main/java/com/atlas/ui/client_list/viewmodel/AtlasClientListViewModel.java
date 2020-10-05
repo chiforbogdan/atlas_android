@@ -1,7 +1,6 @@
-package com.atlas.ui.client_list;
+package com.atlas.ui.client_list.viewmodel;
 
 import android.app.Application;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -10,28 +9,23 @@ import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.atlas.model.AtlasClientEntity;
+import com.atlas.networking.repository.AtlasClientRepository;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class AtlasClientListViewModel extends AndroidViewModel {
 
-    private final MutableLiveData<List<AtlasClientEntity>> clientList = new MutableLiveData<>();
+    private final MutableLiveData<List<AtlasClientEntity>> clientList;
     private final String gatewayIdentity;
+    private final String ownerIdentity;
 
-    public AtlasClientListViewModel(@NonNull Application application, String gatewayIdentity) {
+    public AtlasClientListViewModel(@NonNull Application application, String gatewayIdentity, String ownerIdentity) {
         super(application);
 
-        /*ToDO Database client list fetch */
-        List<AtlasClientEntity> list = new ArrayList<AtlasClientEntity>();
-        list.add(new AtlasClientEntity((long) 1, "client1"));
-        list.add(new AtlasClientEntity((long) 3, "client2"));
-        list.add(new AtlasClientEntity((long) 2, "client3"));
+        clientList = AtlasClientRepository.getInstance().getClients(gatewayIdentity, ownerIdentity);
 
-        this.clientList.setValue(list);
         this.gatewayIdentity = gatewayIdentity;
-
-        Log.w(this.getClass().toString(), gatewayIdentity);
+        this.ownerIdentity = ownerIdentity;
     }
 
     public MutableLiveData<List<AtlasClientEntity>> getClientList() {
@@ -44,17 +38,19 @@ public class AtlasClientListViewModel extends AndroidViewModel {
         Application application;
 
         private final String gatewayIdentity;
+        private final String ownerIdentity;
 
-        public Factory(@NonNull Application application, String gatewayIdentity) {
+        public Factory(@NonNull Application application, String gatewayIdentity, String ownerIdentity) {
             super(application);
             this.application = application;
             this.gatewayIdentity = gatewayIdentity;
+            this.ownerIdentity = ownerIdentity;
         }
 
         @NonNull
         @Override
         public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
-            return (T) new AtlasClientListViewModel(application, gatewayIdentity);
+            return (T) new AtlasClientListViewModel(application, gatewayIdentity, ownerIdentity);
         }
     }
 }
