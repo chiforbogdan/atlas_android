@@ -13,4 +13,8 @@
     <string name="stringFormat">"%s"</string>
     <string name="loadingGateways">"Gateway List is loading …"</string>
     <string name="loadingClients">"Client List is loading …"</string>
+    <string name="loadingCommands">"Command List is loading …"</string>
+    <string name="commandSeqNumber">"Seq. Nr: "</string>
+    <string name="commandPayload">"Payload: "</string>
+    <string name="commandSignature">"Signature: "</string>
 </resources>

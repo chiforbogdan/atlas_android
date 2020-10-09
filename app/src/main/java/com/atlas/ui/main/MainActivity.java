@@ -3,9 +3,11 @@ package com.atlas.ui.main;
 import android.os.Bundle;
 
 import com.atlas.R;
+import com.atlas.model.AtlasClientEntity;
 import com.atlas.model.AtlasGatewayEntity;
 import com.atlas.ui.Tab1;
 import com.atlas.ui.client_list.view.AtlasClientListView;
+import com.atlas.ui.command_list.view.AtlasCommandListView;
 import com.atlas.ui.gateway_claim.AtlasClaimView;
 import com.atlas.ui.gateway_list.view.AtlasGatewayListView;
 import com.atlas.ui.gateway_list.view.BackStackFragment;
@@ -58,5 +60,10 @@ public class MainActivity extends AppCompatActivity {
     public void openAtlasClientListFragment(AtlasGatewayEntity gateway, String owner) {
         AtlasGatewayListView gatewayListFragment = (AtlasGatewayListView) adapter.getItem(viewPager.getCurrentItem());
         gatewayListFragment.replaceFragment(AtlasClientListView.getInstance(gateway.getIdentity(), owner));
+    }
+
+    public void openAtlasClientCommandListFragment(AtlasClientEntity client) {
+        AtlasGatewayListView gatewayListFragment = (AtlasGatewayListView) adapter.getItem(viewPager.getCurrentItem());
+        gatewayListFragment.replaceFragment(AtlasCommandListView.getInstance(client.getIdentity(), client.getCommands()));
     }
 }

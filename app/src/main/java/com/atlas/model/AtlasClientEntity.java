@@ -48,4 +48,11 @@ public class AtlasClientEntity {
         commands.add(command);
     }
 
+    public List<AtlasClientCommandEntity> getCommands() {
+        return commands;
+    }
+
+    public void setCommands(List<AtlasClientCommandEntity> commands) {
+        this.commands = commands;
+    }
 }
