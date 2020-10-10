@@ -54,7 +54,7 @@ public class AtlasClientListView extends Fragment {
 
         AtlasClientListViewModel.Factory factory = new AtlasClientListViewModel
                 .Factory(getActivity()
-                .getApplication(), getArguments().getString("gateway_identity"), getArguments().getString("owner_identity"));
+                .getApplication(), getArguments().getString("gateway_identity"));
 
         final AtlasClientListViewModel viewModel = new ViewModelProvider(this, factory)
                 .get(AtlasClientListViewModel.class);
@@ -66,7 +66,7 @@ public class AtlasClientListView extends Fragment {
 
     private void observeListViewModel(AtlasClientListViewModel viewModel) {
 
-        viewModel.getClientList().observe(this, new Observer<List<AtlasClientEntity>>() {
+        viewModel.getClientList().observe(getViewLifecycleOwner(), new Observer<List<AtlasClientEntity>>() {
             @Override
             public void onChanged(List<AtlasClientEntity> atlasClients) {
                 Log.w(AtlasClientListView.class.getName(), "Client list changed!");
@@ -78,13 +78,11 @@ public class AtlasClientListView extends Fragment {
         });
     }
 
-    public static AtlasClientListView getInstance(String gatewayIdentity, String ownerIdentity) {
-
-        Log.w(AtlasClientListView.class.getName(), "Get client list fragment for gateway:" + gatewayIdentity + " and owner " + ownerIdentity);
+    public static AtlasClientListView getInstance(String gatewayIdentity) {
+        Log.w(AtlasClientListView.class.getName(), "Get client list fragment for gateway:" + gatewayIdentity);
         AtlasClientListView fragment = new AtlasClientListView();
         Bundle args = new Bundle();
         args.putString("gateway_identity", gatewayIdentity);
-        args.putString("owner_identity", ownerIdentity);
         fragment.setArguments(args);
 
         return fragment;

@@ -91,15 +91,7 @@ public class AtlasGatewayListView extends BackStackFragment {
         public void onCLick(AtlasGatewayEntity gateway) {
             Log.w(this.getClass().toString(), "Click on gateway element");
             if (getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.STARTED)) {
-
-                SharedPreferences sharedPreferences = getActivity().getSharedPreferences("OwnerIdentification", Context.MODE_PRIVATE);
-
-                if (sharedPreferences.contains("owner_identity")) {
-                    String ownerID = sharedPreferences.getString("owner_identity", "owner1");
-                    ((MainActivity) getActivity()).openAtlasClientListFragment(gateway, ownerID);
-                } else {
-                    Log.e(AtlasGatewayListView.class.getName(), "Owner is not set!");
-                }
+                ((MainActivity) getActivity()).openAtlasClientListFragment(gateway);
             }
         }
     };

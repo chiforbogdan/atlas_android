@@ -41,6 +41,8 @@ public class MainActivity extends AppCompatActivity {
             Log.i(MainActivity.class.getName(), "Owner UUID is: " + ownerID);
         }
 
+        // TODO upload firebase token to the cloud
+
         Log.i(MainActivity.class.getName(), "Owner UUID is: " + ownerID);
 
         viewPager = findViewById(R.id.viewPager);
@@ -70,8 +72,8 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void openAtlasClientListFragment(AtlasGatewayEntity gateway, String owner) {
+    public void openAtlasClientListFragment(AtlasGatewayEntity gateway) {
         AtlasGatewayListView gatewayListFragment = (AtlasGatewayListView) adapter.getItem(viewPager.getCurrentItem());
-        gatewayListFragment.replaceFragment(AtlasClientListView.getInstance(gateway.getIdentity(), owner));
+        gatewayListFragment.replaceFragment(AtlasClientListView.getInstance(gateway.getIdentity()));
     }
 }

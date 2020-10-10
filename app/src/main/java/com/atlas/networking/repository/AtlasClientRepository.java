@@ -11,6 +11,7 @@ import com.atlas.model.AtlasClientEntity;
 import com.atlas.model.dto.AtlasClientCommandsResp;
 import com.atlas.networking.AtlasClientCommandAPI;
 import com.atlas.networking.AtlasNetworkAPIFactory;
+import com.atlas.utils.AtlasSharedPreferences;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -29,18 +30,20 @@ public class AtlasClientRepository {
     }
 
     public static AtlasClientRepository getInstance() {
-        if (atlasClientRepository == null)
+        if (atlasClientRepository == null) {
             atlasClientRepository = new AtlasClientRepository();
+        }
+
         return atlasClientRepository;
     }
 
-    public MutableLiveData<List<AtlasClientEntity>> getClients(String gatewayIdentity, String owner) {
+    public MutableLiveData<List<AtlasClientEntity>> getClients(String gatewayIdentity) {
         MutableLiveData<List<AtlasClientEntity>> list = new MutableLiveData<>();
 
         new AsyncTask<Void, Void, Void>() {
             @Override
             protected Void doInBackground(Void... voids) {
-                List<AtlasClientEntity> clientList = executeClientGetReq(gatewayIdentity, owner);
+                List<AtlasClientEntity> clientList = executeClientGetReq(gatewayIdentity);
                 list.postValue(clientList);
                 return null;
             }
@@ -49,8 +52,9 @@ public class AtlasClientRepository {
         return list;
     }
 
-    private List<AtlasClientEntity> executeClientGetReq(String gatewayIdentity, String owner) {
+    private List<AtlasClientEntity> executeClientGetReq(String gatewayIdentity) {
         try {
+            String owner = null;
             Log.w(AtlasClientRepository.class.getName(), "Get clients from cloud for owner " + owner);
             AtlasClientCommandAPI clientCommandAPI = AtlasNetworkAPIFactory.createClientCommandAPI(ATLAS_CLOUD_BASE_URL);
 
