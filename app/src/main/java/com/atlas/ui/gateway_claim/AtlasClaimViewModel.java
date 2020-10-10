@@ -17,6 +17,7 @@ import com.atlas.model.dto.AtlasGatewayClaimReq;
 import com.atlas.model.dto.AtlasGatewayClaimResp;
 import com.atlas.networking.AtlasGatewayClaimAPI;
 import com.atlas.networking.AtlasNetworkAPIFactory;
+import com.atlas.utils.AtlasSharedPreferences;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.iid.FirebaseInstanceId;
@@ -67,33 +68,23 @@ public class AtlasClaimViewModel extends AndroidViewModel {
 
     public void claimGateway(final String ipPort, final String shortCode, final String alias) {
         Log.d(AtlasClaimViewModel.class.getName(), "Start gateway claim process!");
-        FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(
-                new OnCompleteListener<InstanceIdResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
-                        Log.d(AtlasClaimViewModel.class.getName(), "Claim gateway");
 
-                        if (!task.isSuccessful()) {
-                            Log.e(AtlasClaimViewModel.class.getName(), "Failed to get token from firebase", task.getException());
-                            claimedLiveData.postValue(false);
-                            return;
-                        }
+        String ownerID = AtlasSharedPreferences.getInstance(getApplication()).getOwnerID();
+        executeClaimReqAsync(ipPort, shortCode, alias, ownerID);
 
-                        /* Owner ID */
-                        String ownerID = Objects.requireNonNull(task.getResult()).getId();
-                        Log.d(AtlasClaimViewModel.class.getName(), "Owner ID is " + ownerID);
-
-                        /* Save ownerID in shared preferences */
-                        SharedPreferences sharedPreferences = getApplication().getSharedPreferences("OwnerIdentification", Context.MODE_PRIVATE);
-                        SharedPreferences.Editor editor = sharedPreferences.edit();
-                        editor.putString("owner_identity", ownerID);
-                        editor.apply();
-
-                        /* Execute gateway claim request */
-                        executeClaimReqAsync(ipPort, shortCode, alias, ownerID);
-                    }
-                }
-        );
+//        FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(
+//                new OnCompleteListener<InstanceIdResult>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
+//                        Log.d(AtlasClaimViewModel.class.getName(), "Claim gateway");
+//
+//                        if (!task.isSuccessful()) {
+//                            Log.e(AtlasClaimViewModel.class.getName(), "Failed to get token from firebase", task.getException());
+//                            claimedLiveData.postValue(false);
+//                            return;
+//                        }
+//                }
+//        );
     }
 
     private void executeClaimReqAsync(final String ipPort, final String shortCode,

@@ -66,7 +66,7 @@ public class AtlasGatewayListView extends BackStackFragment {
 
     private void observeListViewModel(AtlasGatewayListViewModel viewModel) {
 
-        viewModel.getGatewayList().observe(this, new Observer<List<AtlasGatewayEntity>>() {
+        viewModel.getGatewayList().observe(getViewLifecycleOwner(), new Observer<List<AtlasGatewayEntity>>() {
             @Override
             public void onChanged(List<AtlasGatewayEntity> atlasGateways) {
                 Log.w(this.getClass().toString(), "Gateway list changed!");

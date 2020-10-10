@@ -1,6 +1,7 @@
 package com.atlas.ui.main;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import com.atlas.R;
 import com.atlas.model.AtlasGatewayEntity;
@@ -9,10 +10,13 @@ import com.atlas.ui.client_list.view.AtlasClientListView;
 import com.atlas.ui.gateway_claim.AtlasClaimView;
 import com.atlas.ui.gateway_list.view.AtlasGatewayListView;
 import com.atlas.ui.gateway_list.view.BackStackFragment;
+import com.atlas.utils.AtlasSharedPreferences;
 import com.google.android.material.tabs.TabLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
+
+import java.util.UUID;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -27,6 +31,17 @@ public class MainActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        /* Generate owner ID if necessary */
+        String ownerID = AtlasSharedPreferences.getInstance(getApplication()).getOwnerID();
+        if (ownerID == null) {
+            Log.i(MainActivity.class.getName(), "Generating application owner UUID");
+            ownerID = UUID.randomUUID().toString();
+            AtlasSharedPreferences.getInstance(getApplication()).saveOwnerID(UUID.randomUUID().toString());
+            Log.i(MainActivity.class.getName(), "Owner UUID is: " + ownerID);
+        }
+
+        Log.i(MainActivity.class.getName(), "Owner UUID is: " + ownerID);
 
         viewPager = findViewById(R.id.viewPager);
         setupViewPager(viewPager);
