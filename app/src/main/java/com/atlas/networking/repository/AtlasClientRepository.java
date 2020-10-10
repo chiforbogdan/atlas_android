@@ -74,7 +74,12 @@ public class AtlasClientRepository {
 
             List<AtlasClientCommandsResp> responseList = clientCommandsResp.body().get(gatewayIdentity);
             List<AtlasClientEntity> atlasClientEntities = new LinkedList<>();
+
             for (AtlasClientCommandsResp resp : responseList) {
+                /* Check if client is already defined */
+                if (updateAtlasClientCommand(atlasClientEntities, resp))
+                    continue;
+
                 AtlasClientEntity atlasClient = new AtlasClientEntity(resp.getClientIdentity());
                 atlasClient.addCommand(new AtlasClientCommandEntity(new AtlasClientCommandType(resp.getType()), resp.getPayload(), resp.getSeqNo(), resp.getSignature()));
                 atlasClientEntities.add(atlasClient);
@@ -86,5 +91,16 @@ public class AtlasClientRepository {
             e.printStackTrace();
         }
         return null;
+    }
+
+    private boolean updateAtlasClientCommand(List<AtlasClientEntity> atlasClientEntities, AtlasClientCommandsResp response) {
+
+        for (AtlasClientEntity clientEntity : atlasClientEntities) {
+            if (clientEntity.getIdentity().equals(response.getClientIdentity())) {
+                clientEntity.addCommand(new AtlasClientCommandEntity(new AtlasClientCommandType(response.getType()), response.getPayload(), response.getSeqNo(), response.getSignature()));
+                return true;
+            }
+        }
+        return false;
     }
 }

@@ -21,7 +21,7 @@ public class BackStackFragment extends Fragment {
         FragmentManager fm = getChildFragmentManager();
         if (handleBackPressed(fm)) {
             return true;
-        } else if (getUserVisibleHint() && fm.getBackStackEntryCount() > 0) {
+        } else if (fm.getBackStackEntryCount() > 0) {
             fm.popBackStack();
             return true;
         }

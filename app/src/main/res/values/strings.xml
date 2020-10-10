@@ -16,4 +16,8 @@
     <string name="gatewayClaimSuccess">Gateway was claimed successfully</string>
     <string name="gatewayClaimError">An error occurred when claiming the gateway</string>
     <string name="buttonOK">OK</string>
+    <string name="loadingCommands">"Command List is loading …"</string>
+    <string name="commandSeqNumber">"Seq. Nr: "</string>
+    <string name="commandPayload">"Payload: "</string>
+    <string name="commandSignature">"Signature: "</string>
 </resources>

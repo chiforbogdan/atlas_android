@@ -8,13 +8,12 @@ public class AtlasSharedPreferences {
     private static AtlasSharedPreferences instance;
     private static Object lock = new Object();
     private SharedPreferences sharedPref;
-    private Application app;
 
-    public static AtlasSharedPreferences getInstance(Application app) {
+    public static AtlasSharedPreferences getInstance(Context context) {
         if (instance == null) {
             synchronized (lock) {
                 if (instance == null) {
-                    instance = new AtlasSharedPreferences(app);
+                    instance = new AtlasSharedPreferences(context);
                 }
             }
         }
@@ -32,7 +31,7 @@ public class AtlasSharedPreferences {
         editor.commit();
     }
 
-    private AtlasSharedPreferences(Application app) {
-        sharedPref = app.getSharedPreferences(AtlasConstants.ATLAS_SHARED_PREF_NAME, Context.MODE_PRIVATE);
+    private AtlasSharedPreferences(Context context) {
+        sharedPref = context.getSharedPreferences(AtlasConstants.ATLAS_SHARED_PREF_NAME, Context.MODE_PRIVATE);
     }
 }

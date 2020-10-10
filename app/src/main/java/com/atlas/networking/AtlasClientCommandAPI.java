@@ -10,7 +10,6 @@ import retrofit2.http.GET;
 import retrofit2.http.Path;
 
 public interface AtlasClientCommandAPI {
-
     @GET("atlas/owner/commands/{owner_identity}")
     Call<Map<String, List<AtlasClientCommandsResp>>> getClientCommands(@Path("owner_identity") String ownerIdentity);
 }

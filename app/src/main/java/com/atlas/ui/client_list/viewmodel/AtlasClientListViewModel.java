@@ -32,7 +32,6 @@ public class AtlasClientListViewModel extends AndroidViewModel {
     public static class Factory extends ViewModelProvider.AndroidViewModelFactory {
         @NonNull
         Application application;
-
         private final String gatewayIdentity;
 
         public Factory(@NonNull Application application, String gatewayIdentity) {

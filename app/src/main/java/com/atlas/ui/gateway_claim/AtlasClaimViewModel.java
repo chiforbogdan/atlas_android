@@ -57,7 +57,7 @@ public class AtlasClaimViewModel extends AndroidViewModel {
                         .gatewayEntityDao()
                         .selectByAlias(alias);
 
-                Log.d(AtlasClaimViewModel.class.getName(), "Send alias data validity");
+                int send_alias_data_validity = Log.d(AtlasClaimViewModel.class.getName(), "Send alias data validity");
                 aliasLiveData.postValue(true ? gatewayEntity == null : false);
 
                 return null;
@@ -71,20 +71,6 @@ public class AtlasClaimViewModel extends AndroidViewModel {
 
         String ownerID = AtlasSharedPreferences.getInstance(getApplication()).getOwnerID();
         executeClaimReqAsync(ipPort, shortCode, alias, ownerID);
-
-//        FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(
-//                new OnCompleteListener<InstanceIdResult>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
-//                        Log.d(AtlasClaimViewModel.class.getName(), "Claim gateway");
-//
-//                        if (!task.isSuccessful()) {
-//                            Log.e(AtlasClaimViewModel.class.getName(), "Failed to get token from firebase", task.getException());
-//                            claimedLiveData.postValue(false);
-//                            return;
-//                        }
-//                }
-//        );
     }
 
     private void executeClaimReqAsync(final String ipPort, final String shortCode,

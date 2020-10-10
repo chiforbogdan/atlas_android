@@ -17,7 +17,6 @@ public class AtlasClientCommandsResp {
     /* Command owner signature */
     private String signature;
 
-
     public AtlasClientCommandsResp(String clientIdentity, String type, String payload, int seqNo, String signature) {
         this.clientIdentity = clientIdentity;
         this.type = type;

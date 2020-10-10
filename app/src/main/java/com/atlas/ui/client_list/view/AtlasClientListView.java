@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -21,11 +22,13 @@ import com.atlas.model.AtlasClientEntity;
 import com.atlas.ui.client_list.adapter.AtlasClientAdapter;
 import com.atlas.ui.client_list.viewmodel.AtlasClientListViewModel;
 import com.atlas.ui.client_list.callback.ClientClickCallback;
+import com.atlas.ui.gateway_list.view.BackStackFragment;
+import com.atlas.ui.main.MainActivity;
 ;
 
 import java.util.List;
 
-public class AtlasClientListView extends Fragment {
+public class AtlasClientListView extends BackStackFragment {
 
     private AtlasClientAdapter atlasClientAdapter;
     private FragmentListClientsBinding binding;
@@ -88,10 +91,21 @@ public class AtlasClientListView extends Fragment {
         return fragment;
     }
 
+    public void replaceFragment(Fragment fragment) {
+        getChildFragmentManager()
+                .beginTransaction()
+                .replace(((ViewGroup) getView()).getId(), fragment)
+                .addToBackStack(null)
+                .commit();
+    }
+
     private final ClientClickCallback clientClickCallback = new ClientClickCallback() {
         @Override
         public void onCLick(AtlasClientEntity client) {
-            Log.w(this.getClass().toString(), "Click on client element");
+            Log.w(this.getClass().toString(), "Click on client with identity " + client.getIdentity());
+            if (getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.STARTED)) {
+                ((MainActivity) getActivity()).openAtlasClientCommandListFragment(client);
+            }
         }
     };
 }
