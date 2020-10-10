@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import com.atlas.R;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
@@ -20,7 +21,13 @@ public class AtlasClaimView extends Fragment {
 
     private final String ATLAS_CLAIM_REQUEST_PROTOCOL = "https";
 
+    /* Claim view model */
     private AtlasClaimViewModel viewModel;
+    /* UI edit texts */
+    private EditText serverPath;
+    private EditText shortCode;
+    private EditText alias;
+    /* Edit text values */
     private String ipPortValue;
     private String shortCodeValue;
     private String aliasValue;
@@ -30,9 +37,9 @@ public class AtlasClaimView extends Fragment {
         View view = inflater.inflate(R.layout.claim_gateway, container, false);
 
         Button claimButton = view.findViewById(R.id.claimButton);
-        final EditText serverPath = view.findViewById(R.id.gateway_ip_port_edit_text);
-        final EditText shortCode = view.findViewById(R.id.gateway_short_code_edit_text);
-        final EditText alias = view.findViewById(R.id.gateway_alias_edit_text);
+        serverPath = view.findViewById(R.id.gateway_ip_port_edit_text);
+        shortCode = view.findViewById(R.id.gateway_short_code_edit_text);
+        alias = view.findViewById(R.id.gateway_alias_edit_text);
 
         claimButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,12 +76,31 @@ public class AtlasClaimView extends Fragment {
             public void onChanged(Boolean aliasValid) {
                 Log.d(AtlasClaimView.class.getName(), "Alias value changed from view model");
 
-//                if (aliasValid) {
-//                    Log.d(AtlasGatewayClaimView.class.getName(), "Alias value is valid. Claiming the gateway now...");
-//                    viewModel.claimGateway(ipPortValue, shortCodeValue, aliasValue);
-//                } else {
-//                    Log.d(AtlasGatewayClaimView.class.getName(), "Alias value is not valid");
-//                }
+                if (aliasValid) {
+                    Log.d(AtlasClaimView.class.getName(), "Alias value is valid. Claiming the gateway now...");
+                    viewModel.claimGateway(ipPortValue, shortCodeValue, aliasValue);
+                } else {
+                    Log.d(AtlasClaimView.class.getName(), "Alias value is not valid");
+                }
+            }
+        });
+
+        viewModel.getClaimedLiveData().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean claimStatus) {
+                Log.d(AtlasClaimView.class.getName(), "Claim status value changed from view model");
+
+                /* Clear UI edit texts */
+                serverPath.getText().clear();
+                shortCode.getText().clear();
+                alias.getText().clear();
+
+                /* Show alert dialog with gateway claim operation status */
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(AtlasClaimView.this.getContext());
+                alertDialogBuilder.setMessage(claimStatus ? R.string.gatewayClaimSuccess : R.string.gatewayClaimError);
+                alertDialogBuilder.setPositiveButton(R.string.buttonOK, null);
+                AlertDialog alertDialog = alertDialogBuilder.create();
+                alertDialog.show();
             }
         });
     }

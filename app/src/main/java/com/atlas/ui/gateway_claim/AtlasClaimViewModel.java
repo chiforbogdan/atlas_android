@@ -129,6 +129,10 @@ public class AtlasClaimViewModel extends AndroidViewModel {
             gateway.setAlias(alias);
             // TODO if gateway exists, secret key should be updated
             AtlasDatabase.getInstance(getApplication().getApplicationContext()).gatewayEntityDao().insertGateway(gateway);
+
+            Log.i(AtlasClaimViewModel.class.getName(),
+                    String.format("Gateway claim REST API is successful. Gateway alias is %s and gateway identity is %s", alias, claimResp.body().getIdentity()));
+            claimedLiveData.postValue(true);
         } catch (Exception e) {
             Log.e(AtlasClaimViewModel.class.getName(), "Claim request exception: " + e.getMessage());
             claimedLiveData.postValue(false);

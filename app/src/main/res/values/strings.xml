@@ -5,12 +5,15 @@
     <string name="hintCode">Insert code</string>
     <string name="hintAlias">Insert alias</string>
     <string name="claimButton">Claim</string>
-    <string name="identity">"Identity: "</string>
-    <string name="psk">"PSK: "</string>
-    <string name="lastRegisteredTime">"Last registered time: "</string>
-    <string name="lastKeepAlive">"Last keep-alive time: "</string>
-    <string name="keepAliveCounter">"Keep-alive counter: "</string>
+    <string name="identity">Identity: </string>
+    <string name="psk">PSK: </string>
+    <string name="lastRegisteredTime">Last registered time: </string>
+    <string name="lastKeepAlive">Last keep-alive time: </string>
+    <string name="keepAliveCounter">Keep-alive counter: </string>
     <string name="stringFormat">"%s"</string>
-    <string name="loadingGateways">"Gateway List is loading …"</string>
-    <string name="loadingClients">"Client List is loading …"</string>
+    <string name="loadingGateways">Gateway List is loading …</string>
+    <string name="loadingClients">Client List is loading …</string>
+    <string name="gatewayClaimSuccess">Gateway was claimed successfully</string>
+    <string name="gatewayClaimError">An error occurred when claiming the gateway</string>
+    <string name="buttonOK">OK</string>
 </resources>
