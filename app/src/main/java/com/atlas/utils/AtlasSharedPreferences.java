@@ -31,6 +31,16 @@ public class AtlasSharedPreferences {
         editor.commit();
     }
 
+    public String getFirebaseToken() {
+        return sharedPref.getString(AtlasConstants.ATLAS_SHARED_PREF_FIREBASE_TOKEN, "");
+    }
+
+    public void saveFirebaseToken(String firebaseToken) {
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString(AtlasConstants.ATLAS_SHARED_PREF_FIREBASE_TOKEN, firebaseToken);
+        editor.commit();
+    }
+
     private AtlasSharedPreferences(Context context) {
         sharedPref = context.getSharedPreferences(AtlasConstants.ATLAS_SHARED_PREF_NAME, Context.MODE_PRIVATE);
     }

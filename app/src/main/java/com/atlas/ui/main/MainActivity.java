@@ -19,6 +19,7 @@ import com.atlas.ui.gateway_claim.AtlasClaimViewModel;
 import com.atlas.ui.gateway_list.view.AtlasGatewayListView;
 import com.atlas.ui.gateway_list.view.BackStackFragment;
 import com.atlas.utils.AtlasSharedPreferences;
+import com.atlas.worker.AtlasFirebaseWorker;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.tabs.TabLayout;
@@ -28,7 +29,11 @@ import com.google.firebase.iid.InstanceIdResult;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
+import androidx.work.BackoffPolicy;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkManager;
 
+import java.time.Duration;
 import java.util.UUID;
 
 import retrofit2.Call;
@@ -73,8 +78,25 @@ public class MainActivity extends AppCompatActivity {
             Log.i(MainActivity.class.getName(), "Owner UUID is: " + ownerID);
         }
         Log.i(MainActivity.class.getName(), "Owner UUID is: " + ownerID);
-        /* Update firebase token to cloud */
-        AtlasFirebaseUtils.updateFirebaseTokenToCloud(getApplicationContext(), null);
+
+        FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(
+                new OnCompleteListener<InstanceIdResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                        if (task.isSuccessful()) {
+                            Log.i(AtlasFirebaseUtils.class.getName(), "Firebase token obtained");
+                            AtlasSharedPreferences.getInstance(getApplicationContext()).saveFirebaseToken(task.getResult().getToken().toString());
+                            /* Update firebase token to cloud */
+                            OneTimeWorkRequest firebaseUpdateWorker = new OneTimeWorkRequest.Builder(AtlasFirebaseWorker.class)
+                                    .setInitialDelay(Duration.ZERO)
+                                    .setBackoffCriteria(BackoffPolicy.LINEAR, Duration.ofMinutes(1))
+                                    .build();
+                            WorkManager.getInstance().enqueue(firebaseUpdateWorker);
+                        } else {
+                            Log.e(AtlasFirebaseUtils.class.getName(), "Firebase token error", task.getException());
+                        }
+                    }
+                });
     }
 
     private void setupViewPager(ViewPager viewPager) {

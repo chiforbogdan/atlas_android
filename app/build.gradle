@@ -5,8 +5,8 @@ android {
     compileSdkVersion 29
 
     defaultConfig {
-        applicationId "com.atlas_android"
-        minSdkVersion 24
+        applicationId "com.atlas"
+        minSdkVersion 26
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
@@ -30,6 +30,8 @@ android {
         dataBinding = true
     }
 }
+apply plugin: 'com.android.application'
+apply plugin: 'com.google.gms.google-services'
 
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
@@ -61,4 +63,11 @@ dependencies {
     // retrofit
     implementation 'com.squareup.retrofit2:retrofit:2.1.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.1.0'
+
+    // Firebase
+    implementation platform('com.google.firebase:firebase-bom:25.12.0')
+    implementation 'com.google.firebase:firebase-analytics'
+
+    // WorkManager
+    implementation "android.arch.work:work-runtime:1.0.0"
 }
