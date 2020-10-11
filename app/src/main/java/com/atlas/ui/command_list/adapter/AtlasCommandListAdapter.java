@@ -10,15 +10,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.atlas.R;
 import com.atlas.databinding.CommandItemBinding;
-import com.atlas.model.AtlasClientCommandEntity;
+import com.atlas.model.database.AtlasCommand;
 
 import java.util.List;
 
 public class AtlasCommandListAdapter extends RecyclerView.Adapter<AtlasCommandListAdapter.CommandViewHolder> {
 
-    private List<AtlasClientCommandEntity> commandList;
+    private List<AtlasCommand> commandList;
 
-    public void setCommandList(final List<AtlasClientCommandEntity> commandList) {
+    public void setCommandList(final List<AtlasCommand> commandList) {
         if (this.commandList == null) {
             this.commandList = commandList;
             notifyItemRangeInserted(0, commandList.size());
@@ -42,8 +42,8 @@ public class AtlasCommandListAdapter extends RecyclerView.Adapter<AtlasCommandLi
 
                 @Override
                 public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
-                    AtlasClientCommandEntity newCommand = commandList.get(newItemPosition);
-                    AtlasClientCommandEntity oldCommand = commandList.get(oldItemPosition);
+                    AtlasCommand newCommand = commandList.get(newItemPosition);
+                    AtlasCommand oldCommand = commandList.get(oldItemPosition);
                     return oldCommand.getSeqNo() == newCommand.getSeqNo()
                             && oldCommand.getId().equals(newCommand.getId());
                 }
@@ -63,7 +63,7 @@ public class AtlasCommandListAdapter extends RecyclerView.Adapter<AtlasCommandLi
 
     @Override
     public void onBindViewHolder(@NonNull AtlasCommandListAdapter.CommandViewHolder holder, final int position) {
-        final AtlasClientCommandEntity command = commandList.get(position);
+        final AtlasCommand command = commandList.get(position);
 
         holder.binding.setCommand(command);
         holder.binding.executePendingBindings();

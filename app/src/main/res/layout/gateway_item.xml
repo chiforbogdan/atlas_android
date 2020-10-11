@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-        <variable name="gateway" type="com.atlas.model.AtlasGatewayEntity" />
+        <variable name="gateway" type="com.atlas.model.database.AtlasGateway" />
         <variable name="callback" type="com.atlas.ui.gateway_list.callback.GatewayClickCallback" />
     </data>
 

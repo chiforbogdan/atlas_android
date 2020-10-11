@@ -1,6 +1,7 @@
 package com.atlas.ui.client_list.viewmodel;
 
 import android.app.Application;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -8,14 +9,16 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.atlas.model.AtlasClientEntity;
+import com.atlas.database.AtlasDatabase;
+import com.atlas.model.database.AtlasClient;
 import com.atlas.networking.repository.AtlasClientRepository;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 public class AtlasClientListViewModel extends AndroidViewModel {
 
-    private final MutableLiveData<List<AtlasClientEntity>> clientList;
+    private final MutableLiveData<List<AtlasClient>> clientList;
     private final String gatewayIdentity;
 
     public AtlasClientListViewModel(@NonNull Application application, String gatewayIdentity) {
@@ -23,9 +26,18 @@ public class AtlasClientListViewModel extends AndroidViewModel {
 
         clientList = AtlasClientRepository.getInstance().getClients(gatewayIdentity);
         this.gatewayIdentity = gatewayIdentity;
+
+        fetchClients();
     }
 
-    public MutableLiveData<List<AtlasClientEntity>> getClientList() {
+    public void fetchClients() {
+        CompletableFuture.runAsync(() -> {
+            Log.d(AtlasClientListViewModel.class.getName(), "Fetch clients from database");
+            clientList.postValue(AtlasDatabase.getInstance(getApplication()).clientDao().selectByGatewayIdentity(gatewayIdentity));
+        });
+    }
+
+    public MutableLiveData<List<AtlasClient>> getClientList() {
         return clientList;
     }
 

@@ -1,15 +1,15 @@
-package com.atlas.model;
+package com.atlas.model.database;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
-import androidx.room.Ignore;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
 @Entity(indices = {@Index(value = {"gateway_identity", "gateway_alias"},
         unique = true)})
-public class AtlasGatewayEntity {
+public class AtlasGateway {
     @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "gateway_id")
     private Long id;
 
     @ColumnInfo(name = "gateway_identity")
@@ -21,22 +21,8 @@ public class AtlasGatewayEntity {
     @ColumnInfo(name = "gateway_secret_key")
     private String secretKey;
 
-    public AtlasGatewayEntity() {
-    }
-
-    @Ignore
-    public AtlasGatewayEntity(String identity, String alias, String secretKey) {
-        this.identity = identity;
-        this.alias = alias;
-        this.secretKey = secretKey;
-    }
-
-    public AtlasGatewayEntity(Long id, String identity, String alias, String secretKey) {
-        this.id = id;
-        this.identity = identity;
-        this.alias = alias;
-        this.secretKey = secretKey;
-    }
+    @ColumnInfo(name = "gateway_claim_time")
+    private String claimTime;
 
     public Long getId() {
         return id;
@@ -69,4 +55,8 @@ public class AtlasGatewayEntity {
     public void setSecretKey(String secretKey) {
         this.secretKey = secretKey;
     }
+
+    public String getClaimTime() { return claimTime; }
+
+    public void setClaimTime(String claimTime) { this.claimTime = claimTime; }
 }

@@ -8,6 +8,7 @@ import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 
 import com.atlas.utils.AtlasSharedPreferences;
+import com.atlas.worker.AtlasCommandWorker;
 import com.atlas.worker.AtlasFirebaseWorker;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
@@ -19,8 +20,14 @@ public class AtlasFirebaseMessagingService extends FirebaseMessagingService {
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
-        // TODO handle token
         Log.i(AtlasFirebaseMessagingService.class.getName(), "Firebase notification received!");
+
+        /* Fetch commands from cloud */
+        OneTimeWorkRequest commandWorker = new OneTimeWorkRequest.Builder(AtlasCommandWorker.class)
+                .setInitialDelay(Duration.ZERO)
+                .setBackoffCriteria(BackoffPolicy.LINEAR, Duration.ofMinutes(1))
+                .build();
+        WorkManager.getInstance().enqueue(commandWorker);
     }
 
     @Override

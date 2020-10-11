@@ -5,7 +5,7 @@ import android.view.ViewGroup;
 
 import com.atlas.R;
 import com.atlas.databinding.GatewayItemBinding;
-import com.atlas.model.AtlasGatewayEntity;
+import com.atlas.model.database.AtlasGateway;
 import com.atlas.ui.gateway_list.callback.GatewayClickCallback;
 
 import java.util.List;
@@ -18,7 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class AtlasGatewayAdapter extends RecyclerView.Adapter<AtlasGatewayAdapter.GatewayViewHolder> {
 
-    private List<AtlasGatewayEntity> gatewayList;
+    private List<AtlasGateway> gatewayList;
 
     @Nullable
     private final GatewayClickCallback gatewayClickCallback;
@@ -27,7 +27,7 @@ public class AtlasGatewayAdapter extends RecyclerView.Adapter<AtlasGatewayAdapte
         this.gatewayClickCallback = gatewayClickCallback;
     }
 
-    public void setGatewayList(final List<AtlasGatewayEntity> gatewayList) {
+    public void setGatewayList(final List<AtlasGateway> gatewayList) {
         if (this.gatewayList == null) {
             this.gatewayList = gatewayList;
             notifyItemRangeInserted(0, gatewayList.size());
@@ -51,8 +51,8 @@ public class AtlasGatewayAdapter extends RecyclerView.Adapter<AtlasGatewayAdapte
 
                 @Override
                 public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
-                    AtlasGatewayEntity newGateway = gatewayList.get(newItemPosition);
-                    AtlasGatewayEntity oldGateway = gatewayList.get(oldItemPosition);
+                    AtlasGateway newGateway = gatewayList.get(newItemPosition);
+                    AtlasGateway oldGateway = gatewayList.get(oldItemPosition);
                     return oldGateway.getIdentity().matches(newGateway.getIdentity())
                             && oldGateway.getAlias().matches(newGateway.getAlias());
                 }
@@ -73,7 +73,7 @@ public class AtlasGatewayAdapter extends RecyclerView.Adapter<AtlasGatewayAdapte
 
     @Override
     public void onBindViewHolder(@NonNull AtlasGatewayAdapter.GatewayViewHolder holder, final int position) {
-        final AtlasGatewayEntity gateway = gatewayList.get(position);
+        final AtlasGateway gateway = gatewayList.get(position);
 
         holder.binding.setGateway(gateway);
         holder.binding.executePendingBindings();

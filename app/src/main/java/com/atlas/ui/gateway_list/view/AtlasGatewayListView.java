@@ -1,7 +1,5 @@
 package com.atlas.ui.gateway_list.view;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,7 +18,7 @@ import androidx.recyclerview.widget.SimpleItemAnimator;
 
 import com.atlas.R;
 import com.atlas.databinding.FragmentListGatewaysBinding;
-import com.atlas.model.AtlasGatewayEntity;
+import com.atlas.model.database.AtlasGateway;
 import com.atlas.ui.main.MainActivity;
 import com.atlas.ui.gateway_list.viewmodel.AtlasGatewayListViewModel;
 import com.atlas.ui.gateway_list.callback.GatewayClickCallback;
@@ -66,9 +64,9 @@ public class AtlasGatewayListView extends BackStackFragment {
 
     private void observeListViewModel(AtlasGatewayListViewModel viewModel) {
 
-        viewModel.getGatewayList().observe(getViewLifecycleOwner(), new Observer<List<AtlasGatewayEntity>>() {
+        viewModel.getGatewayList().observe(getViewLifecycleOwner(), new Observer<List<AtlasGateway>>() {
             @Override
-            public void onChanged(List<AtlasGatewayEntity> atlasGateways) {
+            public void onChanged(List<AtlasGateway> atlasGateways) {
                 Log.w(this.getClass().toString(), "Gateway list changed!");
                 if (atlasGateways != null) {
                     binding.setIsLoading(false);
@@ -88,7 +86,7 @@ public class AtlasGatewayListView extends BackStackFragment {
 
     private final GatewayClickCallback gatewayClickCallback = new GatewayClickCallback() {
         @Override
-        public void onCLick(AtlasGatewayEntity gateway) {
+        public void onCLick(AtlasGateway gateway) {
             Log.w(this.getClass().toString(), "Click on gateway element");
             if (getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.STARTED)) {
                 ((MainActivity) getActivity()).openAtlasClientListFragment(gateway);

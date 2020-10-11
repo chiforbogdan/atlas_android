@@ -5,6 +5,9 @@ public class AtlasClientCommandsResp {
     /* Client identity */
     private String clientIdentity;
 
+    /* Client alias */
+    private String clientAlias;
+
     /* Command type */
     private String type;
 
@@ -12,17 +15,14 @@ public class AtlasClientCommandsResp {
     private String payload;
 
     /* Command sequence number */
-    private int seqNo;
+    private Long seqNo;
 
-    /* Command owner signature */
-    private String signature;
-
-    public AtlasClientCommandsResp(String clientIdentity, String type, String payload, int seqNo, String signature) {
+    public AtlasClientCommandsResp(String clientIdentity, String clientAlias, String type, String payload, Long seqNo) {
         this.clientIdentity = clientIdentity;
+        this.clientAlias = clientAlias;
         this.type = type;
         this.payload = payload;
         this.seqNo = seqNo;
-        this.signature = signature;
     }
 
     public String getClientIdentity() {
@@ -49,19 +49,15 @@ public class AtlasClientCommandsResp {
         this.payload = payload;
     }
 
-    public int getSeqNo() {
+    public Long getSeqNo() {
         return seqNo;
     }
 
-    public void setSeqNo(int seqNo) {
+    public void setSeqNo(Long seqNo) {
         this.seqNo = seqNo;
     }
 
-    public String getSignature() {
-        return signature;
-    }
+    public String getClientAlias() { return clientAlias; }
 
-    public void setSignature(String signature) {
-        this.signature = signature;
-    }
+    public void setClientAlias(String clientAlias) { this.clientAlias = clientAlias; }
 }

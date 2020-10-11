@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-        <variable name="command" type="com.atlas.model.AtlasClientCommandEntity" />
+        <variable name="command" type="com.atlas.model.database.AtlasCommand" />
     </data>
 
     <androidx.cardview.widget.CardView
@@ -46,7 +46,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingBottom="4dp"
-                    android:text="@{command.getType().getCommandType()}"
+                    android:text="@{command.getType()}"
                     android:textSize="18sp"
                     android:textStyle="bold" />
             </LinearLayout>
@@ -106,7 +106,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:paddingBottom="2dp"
-                        android:text="@{command.signature}"
+                        android:text="signature????"
                         android:textAlignment="center"
                         android:textSize="13sp" />
                 </LinearLayout>

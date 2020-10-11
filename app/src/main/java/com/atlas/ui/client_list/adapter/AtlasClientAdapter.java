@@ -11,14 +11,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.atlas.R;
 import com.atlas.databinding.ClientItemBinding;
-import com.atlas.model.AtlasClientEntity;
+import com.atlas.model.database.AtlasClient;
 import com.atlas.ui.client_list.callback.ClientClickCallback;
 
 import java.util.List;
 
 public class AtlasClientAdapter extends RecyclerView.Adapter<AtlasClientAdapter.ClientViewHolder> {
 
-    private List<AtlasClientEntity> clientList;
+    private List<AtlasClient> clientList;
 
     @Nullable
     private final ClientClickCallback clientClickCallback;
@@ -27,7 +27,7 @@ public class AtlasClientAdapter extends RecyclerView.Adapter<AtlasClientAdapter.
         this.clientClickCallback = clientClickCallback;
     }
 
-    public void setClientList(final List<AtlasClientEntity> clientList) {
+    public void setClientList(final List<AtlasClient> clientList) {
         if (this.clientList == null) {
             this.clientList = clientList;
             notifyItemRangeInserted(0, clientList.size());
@@ -51,8 +51,8 @@ public class AtlasClientAdapter extends RecyclerView.Adapter<AtlasClientAdapter.
 
                 @Override
                 public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
-                    AtlasClientEntity newClient = clientList.get(newItemPosition);
-                    AtlasClientEntity oldClient = clientList.get(oldItemPosition);
+                    AtlasClient newClient = clientList.get(newItemPosition);
+                    AtlasClient oldClient = clientList.get(oldItemPosition);
                     return oldClient.getIdentity().matches(newClient.getIdentity())
                             && oldClient.getId().equals(newClient.getId());
                 }
@@ -73,7 +73,7 @@ public class AtlasClientAdapter extends RecyclerView.Adapter<AtlasClientAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull AtlasClientAdapter.ClientViewHolder holder, final int position) {
-        final AtlasClientEntity client = clientList.get(position);
+        final AtlasClient client = clientList.get(position);
 
         holder.binding.setClient(client);
         holder.binding.executePendingBindings();

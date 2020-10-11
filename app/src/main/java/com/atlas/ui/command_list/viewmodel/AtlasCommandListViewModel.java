@@ -1,6 +1,7 @@
 package com.atlas.ui.command_list.viewmodel;
 
 import android.app.Application;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -8,23 +9,34 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.atlas.model.AtlasClientCommandEntity;
+import com.atlas.database.AtlasDatabase;
+import com.atlas.model.database.AtlasCommand;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 public class AtlasCommandListViewModel extends AndroidViewModel {
 
-    private final MutableLiveData<List<AtlasClientCommandEntity>> commandList;
+    private MutableLiveData<List<AtlasCommand>> commandList;
     private final String clientIdentity;
 
-    public AtlasCommandListViewModel(@NonNull Application application, String clientIdentity, List<AtlasClientCommandEntity> commandList) {
+    public AtlasCommandListViewModel(@NonNull Application application, String clientIdentity) {
         super(application);
 
-        this.commandList = new MutableLiveData<>(commandList);
         this.clientIdentity = clientIdentity;
+        this.commandList = new MutableLiveData<>();
+
+        fetchCommands();
     }
 
-    public MutableLiveData<List<AtlasClientCommandEntity>> getCommandList() {
+    public void fetchCommands() {
+        CompletableFuture.runAsync(() -> {
+            Log.d(AtlasCommandListViewModel.class.getName(), "Fetch commands from database");
+            commandList.postValue(AtlasDatabase.getInstance(getApplication()).commandDao().selectByClientIdentity(clientIdentity));
+        });
+    }
+
+    public MutableLiveData<List<AtlasCommand>> getCommandList() {
         return commandList;
     }
 
@@ -32,10 +44,10 @@ public class AtlasCommandListViewModel extends AndroidViewModel {
 
         @NonNull
         Application application;
-        private List<AtlasClientCommandEntity> commandList;
+        private List<AtlasCommand> commandList;
         private String clientIdentity;
 
-        public Factory(@NonNull Application application, String clientIdentity, List<AtlasClientCommandEntity> commandList) {
+        public Factory(@NonNull Application application, String clientIdentity) {
             super(application);
             this.application = application;
             this.commandList = commandList;
@@ -45,7 +57,7 @@ public class AtlasCommandListViewModel extends AndroidViewModel {
         @NonNull
         @Override
         public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
-            return (T) new AtlasCommandListViewModel(application, clientIdentity, commandList);
+            return (T) new AtlasCommandListViewModel(application, clientIdentity);
         }
     }
 }

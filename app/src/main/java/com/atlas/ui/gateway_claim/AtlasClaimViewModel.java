@@ -8,7 +8,7 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
 import com.atlas.database.AtlasDatabase;
-import com.atlas.model.AtlasGatewayEntity;
+import com.atlas.model.database.AtlasGateway;
 import com.atlas.model.dto.AtlasGatewayClaimReq;
 import com.atlas.model.dto.AtlasGatewayClaimResp;
 import com.atlas.networking.AtlasGatewayClaimAPI;
@@ -43,9 +43,9 @@ public class AtlasClaimViewModel extends AndroidViewModel {
         Log.d(AtlasClaimViewModel.class.getName(), "Validate alias");
 
         CompletableFuture.runAsync(() -> {
-            AtlasGatewayEntity gatewayEntity = AtlasDatabase.getInstance(getApplication()
+            AtlasGateway gatewayEntity = AtlasDatabase.getInstance(getApplication()
                     .getApplicationContext())
-                    .gatewayEntityDao()
+                    .gatewayDao()
                     .selectByAlias(alias);
 
             Log.d(AtlasClaimViewModel.class.getName(), "Send alias data validity");
@@ -72,11 +72,11 @@ public class AtlasClaimViewModel extends AndroidViewModel {
                 }
 
                 /* Insert gateway into database */
-                AtlasGatewayEntity gateway = new AtlasGatewayEntity();
+                AtlasGateway gateway = new AtlasGateway();
                 gateway.setIdentity(claimResp.body().getIdentity());
                 gateway.setAlias(alias);
                 // TODO if gateway exists, secret key should be updated
-                AtlasDatabase.getInstance(getApplication().getApplicationContext()).gatewayEntityDao().insertGateway(gateway);
+                AtlasDatabase.getInstance(getApplication().getApplicationContext()).gatewayDao().insertGateway(gateway);
 
                 Log.i(AtlasClaimViewModel.class.getName(),
                         String.format("Gateway claim REST API is successful. Gateway alias is %s and gateway identity is %s", alias, claimResp.body().getIdentity()));

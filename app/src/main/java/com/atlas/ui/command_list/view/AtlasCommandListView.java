@@ -1,5 +1,9 @@
 package com.atlas.ui.command_list.view;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,17 +21,20 @@ import androidx.recyclerview.widget.SimpleItemAnimator;
 
 import com.atlas.R;
 import com.atlas.databinding.FragmentListCommandsBinding;
-import com.atlas.model.AtlasClientCommandEntity;
+import com.atlas.model.database.AtlasCommand;
 import com.atlas.ui.command_list.viewmodel.AtlasCommandListViewModel;
 import com.atlas.ui.command_list.adapter.AtlasCommandListAdapter;
 
-import java.util.ArrayList;
 import java.util.List;
+
+import static com.atlas.utils.AtlasConstants.ATLAS_CLIENT_COMMANDS_BROADCAST;
 
 public class AtlasCommandListView extends Fragment {
 
     private AtlasCommandListAdapter atlasCommandListAdapter;
     private FragmentListCommandsBinding binding;
+    private AtlasCommandListViewModel viewModel;
+    private BroadcastReceiver commandsReceiver;
 
     @Nullable
     @Override
@@ -52,10 +59,9 @@ public class AtlasCommandListView extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         AtlasCommandListViewModel.Factory factory = new AtlasCommandListViewModel
-                .Factory(getActivity()
-                .getApplication(), getArguments().getString("client_identity"), getArguments().getParcelableArrayList("command_list"));
+                .Factory(getActivity().getApplication(), getArguments().getString("client_identity"));
 
-        final AtlasCommandListViewModel viewModel = new ViewModelProvider(this, factory)
+        viewModel = new ViewModelProvider(this, factory)
                 .get(AtlasCommandListViewModel.class);
 
         binding.setIsLoading(true);
@@ -63,11 +69,42 @@ public class AtlasCommandListView extends Fragment {
         observeListViewModel(viewModel);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if (viewModel != null) {
+            viewModel.fetchCommands();
+        }
+
+        if (commandsReceiver == null) {
+            commandsReceiver = new BroadcastReceiver() {
+                @Override
+                public void onReceive(Context context, Intent intent) {
+                    if (intent.getAction().equalsIgnoreCase(ATLAS_CLIENT_COMMANDS_BROADCAST) && viewModel != null) {
+                        viewModel.fetchCommands();
+                    }
+                }
+            };
+            getContext().registerReceiver(commandsReceiver, new IntentFilter(ATLAS_CLIENT_COMMANDS_BROADCAST));
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        if (commandsReceiver != null) {
+            getContext().unregisterReceiver(commandsReceiver);
+            commandsReceiver = null;
+        }
+    }
+
     private void observeListViewModel(AtlasCommandListViewModel viewModel) {
 
-        viewModel.getCommandList().observe(this, new Observer<List<AtlasClientCommandEntity>>() {
+        viewModel.getCommandList().observe(getViewLifecycleOwner(), new Observer<List<AtlasCommand>>() {
             @Override
-            public void onChanged(List<AtlasClientCommandEntity> atlasCommands) {
+            public void onChanged(List<AtlasCommand> atlasCommands) {
                 Log.w(AtlasCommandListView.class.getName(), "Command list changed!");
                 if (atlasCommands != null) {
                     binding.setIsLoading(false);
@@ -77,13 +114,12 @@ public class AtlasCommandListView extends Fragment {
         });
     }
 
-    public static AtlasCommandListView getInstance(String clientIdentity, List<AtlasClientCommandEntity> commandList) {
+    public static AtlasCommandListView getInstance(String clientIdentity) {
 
         Log.w(AtlasCommandListView.class.getName(), "Get command list fragment for client:" + clientIdentity);
         AtlasCommandListView fragment = new AtlasCommandListView();
         Bundle args = new Bundle();
         args.putString("client_identity", clientIdentity);
-        args.putParcelableArrayList("command_list", new ArrayList<AtlasClientCommandEntity>(commandList));
         fragment.setArguments(args);
 
         return fragment;

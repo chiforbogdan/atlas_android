@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-        <variable name="client" type="com.atlas.model.AtlasClientEntity" />
+        <variable name="client" type="com.atlas.model.database.AtlasClient" />
         <variable name="callback" type="com.atlas.ui.client_list.callback.ClientClickCallback" />
     </data>
 

@@ -9,12 +9,12 @@ import androidx.lifecycle.MutableLiveData;
 
 
 import com.atlas.database.AtlasDatabase;
-import com.atlas.model.AtlasGatewayEntity;
+import com.atlas.model.database.AtlasGateway;
 
 import java.util.List;
 
 public class AtlasGatewayListViewModel extends AndroidViewModel {
-    private final MutableLiveData<List<AtlasGatewayEntity>> gatewayList = new MutableLiveData<>();
+    private final MutableLiveData<List<AtlasGateway>> gatewayList = new MutableLiveData<>();
 
     public AtlasGatewayListViewModel(@NonNull Application application) {
         super(application);
@@ -23,9 +23,9 @@ public class AtlasGatewayListViewModel extends AndroidViewModel {
             @Override
             protected Void doInBackground(Void... voids) {
 
-                List<AtlasGatewayEntity> data = AtlasDatabase.getInstance(getApplication()
+                List<AtlasGateway> data = AtlasDatabase.getInstance(getApplication()
                         .getApplicationContext())
-                        .gatewayEntityDao()
+                        .gatewayDao()
                         .selectAll();
 
                 gatewayList.postValue(data);
@@ -35,7 +35,7 @@ public class AtlasGatewayListViewModel extends AndroidViewModel {
         }.execute();
     }
 
-    public MutableLiveData<List<AtlasGatewayEntity>> getGatewayList() {
+    public MutableLiveData<List<AtlasGateway>> getGatewayList() {
         return gatewayList;
     }
 }
