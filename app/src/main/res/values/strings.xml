@@ -19,5 +19,6 @@
     <string name="loadingCommands">"Command List is loading …"</string>
     <string name="commandSeqNumber">"Seq. Nr: "</string>
     <string name="commandPayload">"Payload: "</string>
-    <string name="commandSignature">"Signature: "</string>
+    <string name="commandClientIdentity">"Client identity: "</string>
+    <string name="commandCreateTime">"Create time: "</string>
 </resources>

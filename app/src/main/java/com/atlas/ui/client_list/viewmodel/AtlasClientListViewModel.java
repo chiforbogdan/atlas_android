@@ -11,7 +11,6 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.atlas.database.AtlasDatabase;
 import com.atlas.model.database.AtlasClient;
-import com.atlas.networking.repository.AtlasClientRepository;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -24,7 +23,7 @@ public class AtlasClientListViewModel extends AndroidViewModel {
     public AtlasClientListViewModel(@NonNull Application application, String gatewayIdentity) {
         super(application);
 
-        clientList = AtlasClientRepository.getInstance().getClients(gatewayIdentity);
+        clientList = new MutableLiveData<>();
         this.gatewayIdentity = gatewayIdentity;
 
         fetchClients();

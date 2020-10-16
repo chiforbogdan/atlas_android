@@ -3,6 +3,7 @@ package com.atlas.model.database;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
+import androidx.room.Ignore;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
@@ -31,6 +32,9 @@ public class AtlasCommand {
 
     @ColumnInfo(name = "command_client_id")
     private Long clientId;
+
+    @Ignore
+    private Boolean actionButtonDisplayed;
 
     public Long getId() {
         return id;
@@ -64,11 +68,29 @@ public class AtlasCommand {
         this.seqNo = seqNo;
     }
 
-    public Long getClientId() { return clientId; }
+    public Long getClientId() {
+        return clientId;
+    }
 
-    public void setClientId(Long clientId) { this.clientId = clientId; }
+    public void setClientId(Long clientId) {
+        this.clientId = clientId;
+    }
 
-    public String getCreateTime() { return createTime; }
+    public String getCreateTime() {
+        return createTime;
+    }
 
-    public void setCreateTime(String createTime) { this.createTime = createTime; }
+    public void setCreateTime(String createTime) {
+        this.createTime = createTime;
+    }
+
+    @Ignore
+    public Boolean getActionButtonDisplayed() {
+        return actionButtonDisplayed;
+    }
+
+    @Ignore
+    public void setActionButtonDisplayed(Boolean actionButtonDisplayed) {
+        this.actionButtonDisplayed = actionButtonDisplayed;
+    }
 }

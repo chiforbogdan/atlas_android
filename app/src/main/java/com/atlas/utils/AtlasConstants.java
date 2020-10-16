@@ -10,5 +10,5 @@ public interface AtlasConstants {
     public static final String ATLAS_CLIENT_COMMANDS_BROADCAST = "ATLAS.CLIENT_COMMANDS_BROADCAST";
 
     /* Cloud base URL */
-    public static final String ATLAS_CLOUD_BASE_URL = "http://192.168.0.18:10000";
+    public static final String ATLAS_CLOUD_BASE_URL = "http://192.168.100.9:10000";
 }

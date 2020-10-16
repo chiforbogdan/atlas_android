@@ -16,4 +16,22 @@
         <item name="tabIndicatorColor">@color/white</item>
     </style>
 
+    <style name="approveButton" parent="@android:style/Widget.Button">
+        <item name="android:gravity">center_vertical|center_horizontal</item>
+        <item name="android:background">@drawable/approve_button_states</item>
+        <item name="android:textColor">@drawable/approve_button_states</item>
+        <item name="android:focusable">true</item>
+        <item name="android:clickable">true</item>
+        <item name="android:minHeight">30dp</item>
+    </style>
+
+    <style name="rejectButton" parent="@android:style/Widget.Button">
+        <item name="android:gravity">center_vertical|center_horizontal</item>
+        <item name="android:textColor">@drawable/reject_button_states</item>
+        <item name="android:background">@drawable/reject_button_states</item>
+        <item name="android:focusable">true</item>
+        <item name="android:clickable">true</item>
+        <item name="android:minHeight">30dp</item>
+    </style>
+
 </resources>

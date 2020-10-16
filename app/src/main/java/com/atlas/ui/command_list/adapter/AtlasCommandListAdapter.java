@@ -11,12 +11,19 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.atlas.R;
 import com.atlas.databinding.CommandItemBinding;
 import com.atlas.model.database.AtlasCommand;
+import com.atlas.ui.command_list.callback.CommandApproveCallback;
 
 import java.util.List;
 
 public class AtlasCommandListAdapter extends RecyclerView.Adapter<AtlasCommandListAdapter.CommandViewHolder> {
 
     private List<AtlasCommand> commandList;
+
+    private final CommandApproveCallback commandApproveCallback;
+
+    public AtlasCommandListAdapter(CommandApproveCallback commandApproveCallback) {
+        this.commandApproveCallback = commandApproveCallback;
+    }
 
     public void setCommandList(final List<AtlasCommand> commandList) {
         if (this.commandList == null) {
@@ -43,11 +50,13 @@ public class AtlasCommandListAdapter extends RecyclerView.Adapter<AtlasCommandLi
                 @Override
                 public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
                     AtlasCommand newCommand = commandList.get(newItemPosition);
-                    AtlasCommand oldCommand = commandList.get(oldItemPosition);
-                    return oldCommand.getSeqNo() == newCommand.getSeqNo()
-                            && oldCommand.getId().equals(newCommand.getId());
+                    AtlasCommand oldCommand = AtlasCommandListAdapter.this.commandList.get(oldItemPosition);
+                    return oldCommand.getSeqNo().equals(newCommand.getSeqNo())
+                            && oldCommand.getId().equals(newCommand.getId())
+                            && oldCommand.getActionButtonDisplayed() == newCommand.getActionButtonDisplayed();
                 }
             });
+
             this.commandList = commandList;
             result.dispatchUpdatesTo(this);
         }
@@ -57,6 +66,7 @@ public class AtlasCommandListAdapter extends RecyclerView.Adapter<AtlasCommandLi
     @Override
     public AtlasCommandListAdapter.CommandViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         CommandItemBinding binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.command_item, parent, false);
+        binding.setCallback(commandApproveCallback);
 
         return new AtlasCommandListAdapter.CommandViewHolder(binding);
     }

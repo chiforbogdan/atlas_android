@@ -4,11 +4,14 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -22,6 +25,7 @@ import androidx.recyclerview.widget.SimpleItemAnimator;
 import com.atlas.R;
 import com.atlas.databinding.FragmentListCommandsBinding;
 import com.atlas.model.database.AtlasCommand;
+import com.atlas.ui.command_list.callback.CommandApproveCallback;
 import com.atlas.ui.command_list.viewmodel.AtlasCommandListViewModel;
 import com.atlas.ui.command_list.adapter.AtlasCommandListAdapter;
 
@@ -42,7 +46,7 @@ public class AtlasCommandListView extends Fragment {
 
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_list_commands, container, false);
 
-        atlasCommandListAdapter = new AtlasCommandListAdapter();
+        atlasCommandListAdapter = new AtlasCommandListAdapter(commandApproveCallback);
 
         ((SimpleItemAnimator) binding.commandsView.getItemAnimator()).setSupportsChangeAnimations(false);
         binding.commandsView.setLayoutManager(new LinearLayoutManager(inflater.getContext()));
@@ -107,6 +111,11 @@ public class AtlasCommandListView extends Fragment {
             public void onChanged(List<AtlasCommand> atlasCommands) {
                 Log.w(AtlasCommandListView.class.getName(), "Command list changed!");
                 if (atlasCommands != null) {
+
+                    /* Set approve&reject buttons visible for the first command */
+                    if (!atlasCommands.isEmpty())
+                        atlasCommands.get(0).setActionButtonDisplayed(true);
+
                     binding.setIsLoading(false);
                     atlasCommandListAdapter.setCommandList(atlasCommands);
                 }
@@ -124,4 +133,43 @@ public class AtlasCommandListView extends Fragment {
 
         return fragment;
     }
+
+    private final CommandApproveCallback commandApproveCallback = new CommandApproveCallback() {
+        @Override
+        public void onApproveButtonClick(AtlasCommand command) {
+            try {
+                Log.w(AtlasCommandListView.class.getName(), "Command with seq. nr. " + command.getSeqNo().toString() + " is being approved!");
+
+                Toast toast;
+                if (viewModel.approveCommand(command))
+                    toast = Toast.makeText(getActivity(), "Command has been APPROVED successfully!", Toast.LENGTH_SHORT);
+                else
+                    toast = Toast.makeText(getActivity(), "An error occurred while trying to approve command!", Toast.LENGTH_SHORT);
+
+                toast.setGravity(Gravity.CENTER, 0, 0);
+                toast.show();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        @Override
+        public void onRejectButtonClick(AtlasCommand command) {
+            try {
+                Log.w(AtlasCommandListView.class.getName(), "Command with seq. nr. " + command.getSeqNo().toString() + " is being rejected!");
+
+                Toast toast;
+                if (viewModel.rejectCommand(command))
+                    toast = Toast.makeText(getActivity(), "Command has been REJECTED successfully!", Toast.LENGTH_SHORT);
+                else
+                    toast = Toast.makeText(getActivity(), "An error occurred while trying to reject command!", Toast.LENGTH_SHORT);
+
+                toast.setGravity(Gravity.CENTER, 0, 0);
+                toast.show();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    };
 }
