@@ -15,11 +15,14 @@ public interface AtlasGatewayDao {
     @Query("SELECT * FROM AtlasGateway")
     List<AtlasGateway> selectAll();
 
-    @Query("SELECT * FROM AtlasGateway WHERE gateway_alias = :aliasValue")
-    AtlasGateway selectByAlias(String aliasValue);
+    @Query("SELECT * FROM AtlasGateway WHERE gateway_alias = :gatewayAlias")
+    AtlasGateway selectByAlias(String gatewayAlias);
 
-    @Query("SELECT * FROM AtlasGateway WHERE gateway_identity = :identity")
-    AtlasGateway selectByIdentity(String identity);
+    @Query("SELECT * FROM AtlasGateway WHERE gateway_identity = :gatewayIdentity")
+    AtlasGateway selectByIdentity(String gatewayIdentity);
+
+    @Query("SELECT COUNT(*) FROM AtlasGateway INNER JOIN AtlasClient ON AtlasGateway.gateway_id = AtlasClient.client_gateway_id INNER JOIN AtlasCommand ON AtlasClient.client_id = AtlasCommand.command_client_id WHERE AtlasGateway.gateway_identity = :gatewayIdentity")
+    Long getPendingCommands(String gatewayIdentity);
 
     @Insert
     void insertGateway(AtlasGateway gateway);

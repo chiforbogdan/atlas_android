@@ -1,4 +1,4 @@
-package com.atlas.ui.command_list.adapter;
+package com.atlas.ui.command_list.view;
 
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.atlas.R;
 import com.atlas.databinding.CommandItemBinding;
 import com.atlas.model.database.AtlasCommand;
-import com.atlas.ui.command_list.callback.CommandApproveCallback;
 
 import java.util.List;
 

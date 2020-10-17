@@ -32,7 +32,13 @@ public class AtlasClientListViewModel extends AndroidViewModel {
     public void fetchClients() {
         CompletableFuture.runAsync(() -> {
             Log.d(AtlasClientListViewModel.class.getName(), "Fetch clients from database");
-            clientList.postValue(AtlasDatabase.getInstance(getApplication()).clientDao().selectByGatewayIdentity(gatewayIdentity));
+
+            List<AtlasClient> clients = AtlasDatabase.getInstance(getApplication()).clientDao().selectByGatewayIdentity(gatewayIdentity);
+            clients.forEach((client) -> {
+                client.setPendingCommands(AtlasDatabase.getInstance(getApplication()).clientDao().getPendingCommands(client.getIdentity()));
+            });
+
+            clientList.postValue(clients);
         });
     }
 

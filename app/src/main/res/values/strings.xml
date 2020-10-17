@@ -21,4 +21,5 @@
     <string name="commandPayload">"Payload: "</string>
     <string name="commandClientIdentity">"Client identity: "</string>
     <string name="commandCreateTime">"Create time: "</string>
+    <string name="pendingCommands">Pending commands: </string>
 </resources>

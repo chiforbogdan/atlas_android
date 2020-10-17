@@ -4,7 +4,7 @@
 
     <data>
         <variable name="client" type="com.atlas.model.database.AtlasClient" />
-        <variable name="callback" type="com.atlas.ui.client_list.callback.ClientClickCallback" />
+        <variable name="callback" type="com.atlas.ui.client_list.view.ClientClickCallback" />
     </data>
 
     <androidx.cardview.widget.CardView
@@ -31,7 +31,7 @@
                 android:layout_height="15dp"
                 android:layout_alignParentStart="true"
                 android:layout_marginTop="6dp"
-                android:background="@drawable/circle"
+                android:background="@drawable/common_google_signin_btn_icon_light"
                 android:gravity="center"
                 android:scaleType="centerInside" />
 
@@ -41,16 +41,62 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
                 android:layout_toEndOf="@+id/avatar"
-                android:orientation="horizontal">
-
+                android:orientation="vertical">
                 <TextView
-                    android:id="@+id/client_identity"
+                    android:id="@+id/client_alias_text_view"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingBottom="4dp"
-                    android:text="@{client.identity}"
+                    android:text="@{client.alias}"
                     android:textSize="18sp"
                     android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="fill_horizontal">
+
+                    <TextView
+                        android:id="@+id/client_identity_message_text_view"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingBottom="4dp"
+                        android:text="@string/identity"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/client_identity_text_view"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingBottom="4dp"
+                        android:text="@{client.identity}"
+                        android:textSize="15sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="fill_horizontal">
+
+                    <TextView
+                        android:id="@+id/client_pending_commands_label_text_view"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingBottom="4dp"
+                        android:text="@string/pendingCommands"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/client_pending_commands_text_view"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingBottom="4dp"
+                        android:text="@{client.pendingCommands.toString()}"
+                        android:textSize="15sp" />
+                </LinearLayout>
+
             </LinearLayout>
         </RelativeLayout>
     </androidx.cardview.widget.CardView>

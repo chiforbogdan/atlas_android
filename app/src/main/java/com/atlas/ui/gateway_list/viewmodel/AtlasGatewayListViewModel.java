@@ -12,27 +12,32 @@ import com.atlas.database.AtlasDatabase;
 import com.atlas.model.database.AtlasGateway;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 public class AtlasGatewayListViewModel extends AndroidViewModel {
     private final MutableLiveData<List<AtlasGateway>> gatewayList = new MutableLiveData<>();
 
     public AtlasGatewayListViewModel(@NonNull Application application) {
         super(application);
+        fetchGatewayList();
+    }
 
-        new AsyncTask<Void, Void, Void>() {
-            @Override
-            protected Void doInBackground(Void... voids) {
+    public void fetchGatewayList() {
+        CompletableFuture.runAsync(() -> {
+            List<AtlasGateway> gateways = AtlasDatabase.getInstance(getApplication()
+                    .getApplicationContext())
+                    .gatewayDao()
+                    .selectAll();
 
-                List<AtlasGateway> data = AtlasDatabase.getInstance(getApplication()
+            gateways.forEach((gateway) -> {
+                gateway.setPendingCommands(AtlasDatabase.getInstance(getApplication()
                         .getApplicationContext())
                         .gatewayDao()
-                        .selectAll();
+                        .getPendingCommands(gateway.getIdentity()));
+            });
 
-                gatewayList.postValue(data);
-
-                return null;
-            }
-        }.execute();
+            gatewayList.postValue(gateways);
+        });
     }
 
     public MutableLiveData<List<AtlasGateway>> getGatewayList() {

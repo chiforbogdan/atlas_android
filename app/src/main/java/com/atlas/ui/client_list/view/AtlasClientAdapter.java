@@ -1,4 +1,4 @@
-package com.atlas.ui.client_list.adapter;
+package com.atlas.ui.client_list.view;
 
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.atlas.R;
 import com.atlas.databinding.ClientItemBinding;
 import com.atlas.model.database.AtlasClient;
-import com.atlas.ui.client_list.callback.ClientClickCallback;
 
 import java.util.List;
 
@@ -29,7 +28,6 @@ public class AtlasClientAdapter extends RecyclerView.Adapter<AtlasClientAdapter.
 
     public void setClientList(final List<AtlasClient> clientList) {
         if (this.clientList == null) {
-            this.clientList = clientList;
             notifyItemRangeInserted(0, clientList.size());
         } else {
             DiffUtil.DiffResult result = DiffUtil.calculateDiff(new DiffUtil.Callback() {
@@ -46,20 +44,21 @@ public class AtlasClientAdapter extends RecyclerView.Adapter<AtlasClientAdapter.
                 @Override
                 public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
                     return AtlasClientAdapter.this.clientList.get(oldItemPosition).getIdentity()
-                            .matches(clientList.get(newItemPosition).getIdentity());
+                            .equalsIgnoreCase(clientList.get(newItemPosition).getIdentity());
                 }
 
                 @Override
                 public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
                     AtlasClient newClient = clientList.get(newItemPosition);
-                    AtlasClient oldClient = clientList.get(oldItemPosition);
-                    return oldClient.getIdentity().matches(newClient.getIdentity())
-                            && oldClient.getId().equals(newClient.getId());
+                    AtlasClient oldClient = AtlasClientAdapter.this.clientList.get(oldItemPosition);
+
+                    return oldClient.equals(newClient);
                 }
             });
-            this.clientList = clientList;
             result.dispatchUpdatesTo(this);
         }
+
+        this.clientList = clientList;
     }
 
     @NonNull

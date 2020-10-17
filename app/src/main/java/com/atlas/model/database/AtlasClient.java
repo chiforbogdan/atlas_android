@@ -3,6 +3,7 @@ package com.atlas.model.database;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
+import androidx.room.Ignore;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
@@ -26,6 +27,9 @@ public class AtlasClient {
     @ColumnInfo(name = "client_gateway_id")
     private Long gatewayId;
 
+    @Ignore
+    private Long pendingCommands;
+
     public Long getId() {
         return id;
     }
@@ -42,11 +46,52 @@ public class AtlasClient {
         this.identity = identity;
     }
 
-    public Long getGatewayId() { return gatewayId; }
+    public Long getGatewayId() {
+        return gatewayId;
+    }
 
-    public void setGatewayId(Long gatewayId) { this.gatewayId = gatewayId; }
+    public void setGatewayId(Long gatewayId) {
+        this.gatewayId = gatewayId;
+    }
 
-    public String getAlias() { return alias; }
+    public String getAlias() {
+        return alias;
+    }
 
-    public void setAlias(String alias) { this.alias = alias; }
+    public void setAlias(String alias) {
+        this.alias = alias;
+    }
+
+    public Long getPendingCommands() {
+        return pendingCommands;
+    }
+
+    public void setPendingCommands(Long pendingCommands) {
+        this.pendingCommands = pendingCommands;
+    }
+
+    public boolean equals(Object client) {
+        if (!(client instanceof  AtlasClient)) {
+            return false;
+        }
+
+        AtlasClient other = (AtlasClient) client;
+        if (!this.getIdentity().equalsIgnoreCase(other.getIdentity())) {
+            return false;
+        }
+        if (!this.getAlias().equalsIgnoreCase(other.getAlias())) {
+            return false;
+        }
+        if (this.getPendingCommands() != other.getPendingCommands()) {
+            return false;
+        }
+        if (this.getId() != other.getId()) {
+            return false;
+        }
+        if (this.getGatewayId() != other.getGatewayId()) {
+            return false;
+        }
+
+        return true;
+    }
 }

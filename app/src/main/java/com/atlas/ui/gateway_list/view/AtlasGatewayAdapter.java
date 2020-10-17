@@ -1,4 +1,4 @@
-package com.atlas.ui.gateway_list.adapter;
+package com.atlas.ui.gateway_list.view;
 
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -6,7 +6,6 @@ import android.view.ViewGroup;
 import com.atlas.R;
 import com.atlas.databinding.GatewayItemBinding;
 import com.atlas.model.database.AtlasGateway;
-import com.atlas.ui.gateway_list.callback.GatewayClickCallback;
 
 import java.util.List;
 
@@ -29,7 +28,6 @@ public class AtlasGatewayAdapter extends RecyclerView.Adapter<AtlasGatewayAdapte
 
     public void setGatewayList(final List<AtlasGateway> gatewayList) {
         if (this.gatewayList == null) {
-            this.gatewayList = gatewayList;
             notifyItemRangeInserted(0, gatewayList.size());
         } else {
             DiffUtil.DiffResult result = DiffUtil.calculateDiff(new DiffUtil.Callback() {
@@ -46,20 +44,20 @@ public class AtlasGatewayAdapter extends RecyclerView.Adapter<AtlasGatewayAdapte
                 @Override
                 public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
                     return AtlasGatewayAdapter.this.gatewayList.get(oldItemPosition).getIdentity()
-                            .matches(gatewayList.get(newItemPosition).getIdentity());
+                            .equalsIgnoreCase(gatewayList.get(newItemPosition).getIdentity());
                 }
 
                 @Override
                 public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
                     AtlasGateway newGateway = gatewayList.get(newItemPosition);
-                    AtlasGateway oldGateway = gatewayList.get(oldItemPosition);
-                    return oldGateway.getIdentity().matches(newGateway.getIdentity())
-                            && oldGateway.getAlias().matches(newGateway.getAlias());
+                    AtlasGateway oldGateway = AtlasGatewayAdapter.this.gatewayList.get(oldItemPosition);
+                    return oldGateway.equals(newGateway);
                 }
             });
-            this.gatewayList = gatewayList;
             result.dispatchUpdatesTo(this);
         }
+
+        this.gatewayList = gatewayList;
     }
 
     @NonNull

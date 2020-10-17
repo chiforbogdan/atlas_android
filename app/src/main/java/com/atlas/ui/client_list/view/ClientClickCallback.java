@@ -1,4 +1,4 @@
-package com.atlas.ui.client_list.callback;
+package com.atlas.ui.client_list.view;
 
 import com.atlas.model.database.AtlasClient;
 

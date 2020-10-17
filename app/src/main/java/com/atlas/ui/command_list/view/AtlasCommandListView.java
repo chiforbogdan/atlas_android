@@ -4,7 +4,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -25,9 +24,7 @@ import androidx.recyclerview.widget.SimpleItemAnimator;
 import com.atlas.R;
 import com.atlas.databinding.FragmentListCommandsBinding;
 import com.atlas.model.database.AtlasCommand;
-import com.atlas.ui.command_list.callback.CommandApproveCallback;
 import com.atlas.ui.command_list.viewmodel.AtlasCommandListViewModel;
-import com.atlas.ui.command_list.adapter.AtlasCommandListAdapter;
 
 import java.util.List;
 
@@ -109,7 +106,7 @@ public class AtlasCommandListView extends Fragment {
         viewModel.getCommandList().observe(getViewLifecycleOwner(), new Observer<List<AtlasCommand>>() {
             @Override
             public void onChanged(List<AtlasCommand> atlasCommands) {
-                Log.w(AtlasCommandListView.class.getName(), "Command list changed!");
+                Log.d(AtlasCommandListView.class.getName(), "Command list changed!");
                 if (atlasCommands != null) {
 
                     /* Set approve&reject buttons visible for the first command */
@@ -119,6 +116,23 @@ public class AtlasCommandListView extends Fragment {
                     binding.setIsLoading(false);
                     atlasCommandListAdapter.setCommandList(atlasCommands);
                 }
+            }
+        });
+
+        viewModel.getCommandStatus().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean status) {
+                Log.d(AtlasCommandListView.class.getName(), "Command status changed!");
+
+                Toast toast;
+                if (status) {
+                    toast = Toast.makeText(getActivity(), "Command status sent successfully", Toast.LENGTH_SHORT);
+                    viewModel.fetchCommands();
+                } else
+                    toast = Toast.makeText(getActivity(), "An error occurred while trying to send command status!", Toast.LENGTH_SHORT);
+
+                toast.setGravity(Gravity.CENTER, 0, 0);
+                toast.show();
             }
         });
     }
@@ -138,17 +152,8 @@ public class AtlasCommandListView extends Fragment {
         @Override
         public void onApproveButtonClick(AtlasCommand command) {
             try {
-                Log.w(AtlasCommandListView.class.getName(), "Command with seq. nr. " + command.getSeqNo().toString() + " is being approved!");
-
-                Toast toast;
-                if (viewModel.approveCommand(command))
-                    toast = Toast.makeText(getActivity(), "Command has been APPROVED successfully!", Toast.LENGTH_SHORT);
-                else
-                    toast = Toast.makeText(getActivity(), "An error occurred while trying to approve command!", Toast.LENGTH_SHORT);
-
-                toast.setGravity(Gravity.CENTER, 0, 0);
-                toast.show();
-
+                Log.d(AtlasCommandListView.class.getName(), "Command with seq. nr. " + command.getSeqNo().toString() + " is being approved!");
+                viewModel.sendCommandStatus(command, true);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -157,16 +162,8 @@ public class AtlasCommandListView extends Fragment {
         @Override
         public void onRejectButtonClick(AtlasCommand command) {
             try {
-                Log.w(AtlasCommandListView.class.getName(), "Command with seq. nr. " + command.getSeqNo().toString() + " is being rejected!");
-
-                Toast toast;
-                if (viewModel.rejectCommand(command))
-                    toast = Toast.makeText(getActivity(), "Command has been REJECTED successfully!", Toast.LENGTH_SHORT);
-                else
-                    toast = Toast.makeText(getActivity(), "An error occurred while trying to reject command!", Toast.LENGTH_SHORT);
-
-                toast.setGravity(Gravity.CENTER, 0, 0);
-                toast.show();
+                Log.d(AtlasCommandListView.class.getName(), "Command with seq. nr. " + command.getSeqNo().toString() + " is being rejected!");
+                viewModel.sendCommandStatus(command, false);
             } catch (Exception e) {
                 e.printStackTrace();
             }

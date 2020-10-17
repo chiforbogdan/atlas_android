@@ -1,5 +1,9 @@
 package com.atlas.ui.gateway_list.view;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,15 +25,17 @@ import com.atlas.databinding.FragmentListGatewaysBinding;
 import com.atlas.model.database.AtlasGateway;
 import com.atlas.ui.main.MainActivity;
 import com.atlas.ui.gateway_list.viewmodel.AtlasGatewayListViewModel;
-import com.atlas.ui.gateway_list.callback.GatewayClickCallback;
-import com.atlas.ui.gateway_list.adapter.AtlasGatewayAdapter;
 
 import java.util.List;
+
+import static com.atlas.utils.AtlasConstants.ATLAS_CLIENT_COMMANDS_BROADCAST;
 
 public class AtlasGatewayListView extends BackStackFragment {
 
     private AtlasGatewayAdapter atlasGatewayAdapter;
     private FragmentListGatewaysBinding binding;
+    private AtlasGatewayListViewModel viewModel;
+    private BroadcastReceiver gatewaysReceiver;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -52,22 +58,48 @@ public class AtlasGatewayListView extends BackStackFragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        final AtlasGatewayListViewModel viewModel = new ViewModelProvider(this).get(AtlasGatewayListViewModel.class);
-        observeListViewModel(viewModel);
+        viewModel = new ViewModelProvider(this).get(AtlasGatewayListViewModel.class);
+        observeListViewModel();
     }
 
     @Override
     public void onResume() {
         super.onResume();
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Atlas Gateways");
+
+        if (viewModel != null) {
+            viewModel.fetchGatewayList();
+        }
+
+        if (gatewaysReceiver == null) {
+            gatewaysReceiver = new BroadcastReceiver() {
+                @Override
+                public void onReceive(Context context, Intent intent) {
+                    if (intent.getAction().equalsIgnoreCase(ATLAS_CLIENT_COMMANDS_BROADCAST) && viewModel != null) {
+                        viewModel.fetchGatewayList();
+                    }
+                }
+            };
+            getContext().registerReceiver(gatewaysReceiver, new IntentFilter(ATLAS_CLIENT_COMMANDS_BROADCAST));
+        }
     }
 
-    private void observeListViewModel(AtlasGatewayListViewModel viewModel) {
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        if (gatewaysReceiver != null) {
+            getContext().unregisterReceiver(gatewaysReceiver);
+            gatewaysReceiver = null;
+        }
+    }
+
+    private void observeListViewModel() {
 
         viewModel.getGatewayList().observe(getViewLifecycleOwner(), new Observer<List<AtlasGateway>>() {
             @Override
             public void onChanged(List<AtlasGateway> atlasGateways) {
-                Log.w(this.getClass().toString(), "Gateway list changed!");
+                Log.d(this.getClass().toString(), "Gateway list changed!");
                 if (atlasGateways != null) {
                     binding.setIsLoading(false);
                     atlasGatewayAdapter.setGatewayList(atlasGateways);

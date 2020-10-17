@@ -1,4 +1,4 @@
-package com.atlas.ui.command_list.callback;
+package com.atlas.ui.command_list.view;
 
 import com.atlas.model.database.AtlasCommand;
 

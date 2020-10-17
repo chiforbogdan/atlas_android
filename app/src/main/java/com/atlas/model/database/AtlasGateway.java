@@ -2,6 +2,7 @@ package com.atlas.model.database;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
@@ -23,6 +24,9 @@ public class AtlasGateway {
 
     @ColumnInfo(name = "gateway_claim_time")
     private String claimTime;
+
+    @Ignore
+    private Long pendingCommands;
 
     public Long getId() {
         return id;
@@ -56,7 +60,45 @@ public class AtlasGateway {
         this.secretKey = secretKey;
     }
 
-    public String getClaimTime() { return claimTime; }
+    public String getClaimTime() {
+        return claimTime;
+    }
 
-    public void setClaimTime(String claimTime) { this.claimTime = claimTime; }
+    public void setClaimTime(String claimTime) {
+        this.claimTime = claimTime;
+    }
+
+    public Long getPendingCommands() {
+        return pendingCommands;
+    }
+
+    public void setPendingCommands(Long pendingCommands) {
+        this.pendingCommands = pendingCommands;
+    }
+
+    @Override
+    public boolean equals(Object gateway) {
+        if (!(gateway instanceof AtlasGateway)) {
+            return false;
+        }
+
+        AtlasGateway other = (AtlasGateway) gateway;
+        if (!this.getIdentity().equalsIgnoreCase(other.getIdentity())) {
+            return false;
+        }
+        if (!this.getAlias().equalsIgnoreCase(other.getAlias())) {
+            return false;
+        }
+        if (!this.getSecretKey().equalsIgnoreCase(other.getSecretKey())) {
+            return false;
+        }
+        if (this.getId() != other.getId()) {
+            return false;
+        }
+        if (this.getPendingCommands() != other.getPendingCommands()) {
+            return false;
+        }
+
+        return true;
+    }
 }

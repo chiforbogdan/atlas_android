@@ -1,6 +1,7 @@
 package com.atlas.ui.gateway_claim;
 
 import android.app.Application;
+import java.util.Base64;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -15,9 +16,15 @@ import com.atlas.networking.AtlasGatewayClaimAPI;
 import com.atlas.networking.AtlasNetworkAPIFactory;
 import com.atlas.utils.AtlasSharedPreferences;
 
+import java.security.SecureRandom;
 import java.util.concurrent.CompletableFuture;
 
+import javax.crypto.KeyGenerator;
+import javax.crypto.SecretKey;
+
 import retrofit2.Response;
+
+import static com.atlas.utils.AtlasConstants.ATLAS_GATEWAY_SECRET_KEY_SIZE_BITS;
 
 public class AtlasClaimViewModel extends AndroidViewModel {
     private static final String ATLAS_GATEWAY_HTTPS_SCHEMA = "https://";
@@ -64,7 +71,15 @@ public class AtlasClaimViewModel extends AndroidViewModel {
             try {
                 /* Execute REST API request to gateway */
                 AtlasGatewayClaimAPI gatewayClaimAPI = AtlasNetworkAPIFactory.createGatewayClaimAPI(url);
-                AtlasGatewayClaimReq claimReq = new AtlasGatewayClaimReq(shortCode, "secretKey", ownerID);
+
+                /* Generate gateway secret key */
+                SecureRandom secureRandom = new SecureRandom();
+                KeyGenerator keyGenerator = KeyGenerator.getInstance("AES");
+                keyGenerator.init(ATLAS_GATEWAY_SECRET_KEY_SIZE_BITS, secureRandom);
+                SecretKey secretKey = KeyGenerator.getInstance("AES").generateKey();
+                String encodedKey = Base64.getEncoder().encodeToString(secretKey.getEncoded());
+
+                AtlasGatewayClaimReq claimReq = new AtlasGatewayClaimReq(shortCode, encodedKey, ownerID);
                 Response<AtlasGatewayClaimResp> claimResp = gatewayClaimAPI.claimGateway(claimReq).execute();
                 if (!claimResp.isSuccessful()) {
                     Log.e(AtlasClaimViewModel.class.getName(), "Gateway claim REST API is not successful");
@@ -75,6 +90,7 @@ public class AtlasClaimViewModel extends AndroidViewModel {
                 AtlasGateway gateway = new AtlasGateway();
                 gateway.setIdentity(claimResp.body().getIdentity());
                 gateway.setAlias(alias);
+                gateway.setSecretKey(encodedKey);
                 // TODO if gateway exists, secret key should be updated
                 AtlasDatabase.getInstance(getApplication().getApplicationContext()).gatewayDao().insertGateway(gateway);
 

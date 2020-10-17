@@ -23,9 +23,7 @@ import androidx.recyclerview.widget.SimpleItemAnimator;
 import com.atlas.R;
 import com.atlas.databinding.FragmentListClientsBinding;
 import com.atlas.model.database.AtlasClient;
-import com.atlas.ui.client_list.adapter.AtlasClientAdapter;
 import com.atlas.ui.client_list.viewmodel.AtlasClientListViewModel;
-import com.atlas.ui.client_list.callback.ClientClickCallback;
 import com.atlas.ui.gateway_list.view.BackStackFragment;
 import com.atlas.ui.main.MainActivity;
 ;
@@ -108,11 +106,14 @@ public class AtlasClientListView extends BackStackFragment {
 
         viewModel.getClientList().observe(getViewLifecycleOwner(), new Observer<List<AtlasClient>>() {
             @Override
-            public void onChanged(List<AtlasClient> atlasClients) {
-                Log.w(AtlasClientListView.class.getName(), "Client list changed!");
-                if (atlasClients != null) {
+            public void onChanged(List<AtlasClient> clients) {
+                Log.d(AtlasClientListView.class.getName(), "Client list changed!");
+                if (clients != null) {
                     binding.setIsLoading(false);
-                    atlasClientAdapter.setClientList(atlasClients);
+                    atlasClientAdapter.setClientList(clients);
+                    for (AtlasClient cl : clients) {
+                        Log.d(AtlasClientListView.class.getName(), "Client list changed!" + cl.getPendingCommands());
+                    }
                 }
             }
         });

@@ -4,7 +4,7 @@
 
     <data>
         <variable name="command" type="com.atlas.model.database.AtlasCommand" />
-        <variable name="callback" type="com.atlas.ui.command_list.callback.CommandApproveCallback" />
+        <variable name="callback" type="com.atlas.ui.command_list.view.CommandApproveCallback" />
         <import type="android.view.View" />
     </data>
 
