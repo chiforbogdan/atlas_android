@@ -126,6 +126,9 @@ public class AtlasCommandListViewModel extends AndroidViewModel {
             AtlasDatabase.getInstance(getApplication()).commandDao().deleteCommand(command);
             Log.d(AtlasCommandListViewModel.class.getName(), "Command has been DELETED from the local database!");
 
+            /* Notify UI about the client/commands change */
+            getApplication().getApplicationContext().sendBroadcast(new Intent(ATLAS_CLIENT_COMMANDS_BROADCAST));
+
             return true;
         } catch (Exception e) {
             e.printStackTrace();

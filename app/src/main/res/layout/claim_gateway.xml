@@ -27,7 +27,7 @@
             android:layout_marginBottom="10dp"
             android:background="@drawable/text_editor"
             android:ems="10"
-            android:hint="@string/hintIP"
+            android:hint="@string/gateway_claim_hint_ip"
             android:importantForAutofill="no"
             android:inputType="textPersonName"
             android:padding="10dp"
@@ -43,7 +43,7 @@
             android:layout_marginBottom="15dp"
             android:background="@drawable/text_editor"
             android:ems="10"
-            android:hint="@string/hintCode"
+            android:hint="@string/gateway_claim_hint_code"
             android:importantForAutofill="no"
             android:inputType="textPassword"
             android:padding="10dp"
@@ -59,7 +59,7 @@
             android:layout_marginBottom="15dp"
             android:background="@drawable/text_editor"
             android:ems="10"
-            android:hint="@string/hintAlias"
+            android:hint="@string/gateway_claim_hint_alias"
             android:importantForAutofill="no"
             android:inputType="text"
             android:padding="10dp"
@@ -72,7 +72,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="30dp"
             android:background="@drawable/button"
-            android:text="@string/claimButton"
+            android:text="@string/gateway_claim_button"
             android:textColor="@color/white" />
 
         <TextView
@@ -80,7 +80,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="15dp"
-            android:text="Note! The code can be seen in the right corner of the device."
+            android:text="@string/gateway_claim_note"
             android:textAlignment="center"
             android:textStyle="italic" />
 

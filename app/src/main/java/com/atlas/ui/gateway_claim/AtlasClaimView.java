@@ -97,8 +97,8 @@ public class AtlasClaimView extends Fragment {
 
                 /* Show alert dialog with gateway claim operation status */
                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(AtlasClaimView.this.getContext());
-                alertDialogBuilder.setMessage(claimStatus ? R.string.gatewayClaimSuccess : R.string.gatewayClaimError);
-                alertDialogBuilder.setPositiveButton(R.string.buttonOK, null);
+                alertDialogBuilder.setMessage(claimStatus ? R.string.gateway_claim_success : R.string.gateway_claim_error);
+                alertDialogBuilder.setPositiveButton(R.string.gateway_claim_button_ok, null);
                 AlertDialog alertDialog = alertDialogBuilder.create();
                 alertDialog.show();
             }

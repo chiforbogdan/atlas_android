@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Lifecycle;
@@ -74,6 +75,7 @@ public class AtlasClientListView extends BackStackFragment {
     @Override
     public void onResume() {
         super.onResume();
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(getString(R.string.client_list_title));
 
         if (viewModel != null) {
             viewModel.fetchClients();

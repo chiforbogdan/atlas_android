@@ -65,7 +65,7 @@ public class AtlasGatewayListView extends BackStackFragment {
     @Override
     public void onResume() {
         super.onResume();
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Atlas Gateways");
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(getString(R.string.gateway_list_title));
 
         if (viewModel != null) {
             viewModel.fetchGatewayList();
@@ -95,7 +95,6 @@ public class AtlasGatewayListView extends BackStackFragment {
     }
 
     private void observeListViewModel() {
-
         viewModel.getGatewayList().observe(getViewLifecycleOwner(), new Observer<List<AtlasGateway>>() {
             @Override
             public void onChanged(List<AtlasGateway> atlasGateways) {

@@ -7,7 +7,7 @@ import com.atlas.R;
 import com.atlas.firebase.AtlasFirebaseUtils;
 import com.atlas.model.database.AtlasClient;
 import com.atlas.model.database.AtlasGateway;
-import com.atlas.ui.Tab1;
+import com.atlas.ui.home.view.Home;
 import com.atlas.ui.client_list.view.AtlasClientListView;
 import com.atlas.ui.command_list.view.AtlasCommandListView;
 import com.atlas.ui.gateway_claim.AtlasClaimView;
@@ -104,9 +104,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void setupViewPager(ViewPager viewPager) {
         adapter = new PageAdapter(getSupportFragmentManager());
-        adapter.addFragment(new Tab1(), "Home");
-        adapter.addFragment(new AtlasClaimView(), "Claim");
-        adapter.addFragment(new AtlasGatewayListView(), "Gateways");
+        adapter.addFragment(new Home(), getString(R.string.main_home_tab_title));
+        adapter.addFragment(new AtlasClaimView(), getString(R.string.main_claim_tab_title));
+        adapter.addFragment(new AtlasGatewayListView(), getString(R.string.main_commands_tab_title));
         viewPager.setOffscreenPageLimit(2);
         viewPager.setAdapter(adapter);
     }

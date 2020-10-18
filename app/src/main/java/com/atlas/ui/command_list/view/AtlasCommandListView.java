@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
@@ -73,6 +74,7 @@ public class AtlasCommandListView extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(getString(R.string.command_list_title));
 
         if (viewModel != null) {
             viewModel.fetchCommands();
@@ -102,7 +104,6 @@ public class AtlasCommandListView extends Fragment {
     }
 
     private void observeListViewModel(AtlasCommandListViewModel viewModel) {
-
         viewModel.getCommandList().observe(getViewLifecycleOwner(), new Observer<List<AtlasCommand>>() {
             @Override
             public void onChanged(List<AtlasCommand> atlasCommands) {
@@ -127,9 +128,9 @@ public class AtlasCommandListView extends Fragment {
                 Toast toast;
                 if (status) {
                     toast = Toast.makeText(getActivity(), "Command status sent successfully", Toast.LENGTH_SHORT);
-                    viewModel.fetchCommands();
-                } else
+                } else {
                     toast = Toast.makeText(getActivity(), "An error occurred while trying to send command status!", Toast.LENGTH_SHORT);
+                }
 
                 toast.setGravity(Gravity.CENTER, 0, 0);
                 toast.show();
