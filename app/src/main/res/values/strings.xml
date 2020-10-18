@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">atlas_android</string>
+    <string name="app_name">ATLAS IoT</string>
     <string name="gateway_claim_title">Claim gateway</string>
     <string name="gateway_claim_hint_ip">Insert gateway hostname/IP address</string>
     <string name="gateway_claim_hint_code">Insert code</string>
