@@ -12,6 +12,10 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        // Build Parameters
+        buildConfigField("String", "ATLAS_CLOUD_BASE_URL", "\"http://192.168.0.20:10000\"")
+        buildConfigField("Integer", "ATLAS_GATEWAY_CLAIM_PORT", "3333")
     }
 
     buildTypes {

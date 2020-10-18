@@ -24,6 +24,7 @@ public class Home extends Fragment {
 
     private HomeViewModel viewModel;
     private TextView pendingCommands;
+    private TextView pendingCommandsLabel;
     private BroadcastReceiver commandsReceiver;
 
     @Override
@@ -31,6 +32,7 @@ public class Home extends Fragment {
         View view = inflater.inflate(R.layout.home, container, false);
 
         pendingCommands = view.findViewById(R.id.total_pending_commands_text_view);
+        pendingCommandsLabel = view.findViewById(R.id.total_pending_commands_label_text_view);
         viewModel = new ViewModelProvider(this).get(HomeViewModel.class);
         observeListViewModel();
 
@@ -75,6 +77,11 @@ public class Home extends Fragment {
             public void onChanged(Long totalPendingCommands) {
                 if (totalPendingCommands != null) {
                     pendingCommands.setText(totalPendingCommands.toString());
+                    if (totalPendingCommands == 1) {
+                        pendingCommandsLabel.setText(R.string.home_total_command_waiting);
+                    } else {
+                        pendingCommandsLabel.setText(R.string.home_total_commands_waiting);
+                    }
                 }
             }
         });

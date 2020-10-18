@@ -26,11 +26,16 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 import androidx.work.BackoffPolicy;
+import androidx.work.ExistingPeriodicWorkPolicy;
 import androidx.work.OneTimeWorkRequest;
+import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
 
 import java.time.Duration;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
+
+import static com.atlas.utils.AtlasConstants.ATLAS_COMMAND_WORKER_TIME_MIN;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -63,11 +68,12 @@ public class MainActivity extends AppCompatActivity {
     public void onResume() {
         super.onResume();
         /* Fetch commands from cloud */
-        OneTimeWorkRequest commandWorker = new OneTimeWorkRequest.Builder(AtlasCommandWorker.class)
-                .setInitialDelay(Duration.ZERO)
+        PeriodicWorkRequest commandWorker = new PeriodicWorkRequest.Builder(AtlasCommandWorker.class, ATLAS_COMMAND_WORKER_TIME_MIN, TimeUnit.MINUTES)
                 .setBackoffCriteria(BackoffPolicy.LINEAR, Duration.ofMinutes(1))
                 .build();
-        WorkManager.getInstance().enqueue(commandWorker);
+        WorkManager.getInstance().enqueueUniquePeriodicWork(AtlasCommandWorker.class.getName(),
+                ExistingPeriodicWorkPolicy.REPLACE,
+                commandWorker);
     }
 
     private void executeUtils() {

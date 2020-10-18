@@ -4,7 +4,9 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.work.BackoffPolicy;
+import androidx.work.ExistingPeriodicWorkPolicy;
 import androidx.work.OneTimeWorkRequest;
+import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
 
 import com.atlas.utils.AtlasSharedPreferences;
@@ -14,6 +16,9 @@ import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
 import java.time.Duration;
+import java.util.concurrent.TimeUnit;
+
+import static com.atlas.utils.AtlasConstants.ATLAS_COMMAND_WORKER_TIME_MIN;
 
 
 public class AtlasFirebaseMessagingService extends FirebaseMessagingService {
@@ -23,11 +28,12 @@ public class AtlasFirebaseMessagingService extends FirebaseMessagingService {
         Log.i(AtlasFirebaseMessagingService.class.getName(), "Firebase notification received!");
 
         /* Fetch commands from cloud */
-        OneTimeWorkRequest commandWorker = new OneTimeWorkRequest.Builder(AtlasCommandWorker.class)
-                .setInitialDelay(Duration.ZERO)
+        PeriodicWorkRequest commandWorker = new PeriodicWorkRequest.Builder(AtlasCommandWorker.class, ATLAS_COMMAND_WORKER_TIME_MIN, TimeUnit.MINUTES)
                 .setBackoffCriteria(BackoffPolicy.LINEAR, Duration.ofMinutes(1))
                 .build();
-        WorkManager.getInstance().enqueue(commandWorker);
+        WorkManager.getInstance().enqueueUniquePeriodicWork(AtlasCommandWorker.class.getName(),
+                ExistingPeriodicWorkPolicy.REPLACE,
+                commandWorker);
     }
 
     @Override

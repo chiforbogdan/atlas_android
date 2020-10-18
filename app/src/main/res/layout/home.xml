@@ -22,6 +22,7 @@
             android:minHeight="20dp"/>
 
         <TextView
+            android:id="@+id/total_pending_commands_label_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/home_total_commands_waiting"

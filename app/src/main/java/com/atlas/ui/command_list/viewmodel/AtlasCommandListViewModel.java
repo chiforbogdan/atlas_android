@@ -11,6 +11,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.atlas.BuildConfig;
 import com.atlas.database.AtlasDatabase;
 import com.atlas.model.database.AtlasCommand;
 import com.atlas.model.database.AtlasGateway;
@@ -29,7 +30,6 @@ import okhttp3.ResponseBody;
 import retrofit2.Response;
 
 import static com.atlas.utils.AtlasConstants.ATLAS_CLIENT_COMMANDS_BROADCAST;
-import static com.atlas.utils.AtlasConstants.ATLAS_CLOUD_BASE_URL;
 import static com.atlas.utils.AtlasConstants.ATLAS_HMAC_ALGO;
 
 public class AtlasCommandListViewModel extends AndroidViewModel {
@@ -114,7 +114,7 @@ public class AtlasCommandListViewModel extends AndroidViewModel {
             Log.d(AtlasCommandListViewModel.class.getName(), "Approve command seq.nr. " + String.valueOf(command.getSeqNo()) + " for " + ownerID + " with signature:" + signature);
 
             AtlasOwnerCommandReq ownerCommandReq = new AtlasOwnerCommandReq(gateway.getIdentity(), clientIdentity, command.getSeqNo().intValue(), commandStatus, signature);
-            AtlasClientCommandAPI clientCommandAPI = AtlasNetworkAPIFactory.createClientCommandAPI(ATLAS_CLOUD_BASE_URL);
+            AtlasClientCommandAPI clientCommandAPI = AtlasNetworkAPIFactory.createClientCommandAPI(BuildConfig.ATLAS_CLOUD_BASE_URL);
             Response<ResponseBody> response = clientCommandAPI.sendCommandStatus(ownerID, ownerCommandReq).execute();
 
             if (!response.isSuccessful()) {

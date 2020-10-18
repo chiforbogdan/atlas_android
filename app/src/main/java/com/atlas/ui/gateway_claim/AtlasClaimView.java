@@ -1,5 +1,6 @@
 package com.atlas.ui.gateway_claim;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,10 +11,12 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.atlas.R;
+import com.atlas.ui.main.MainActivity;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -24,11 +27,11 @@ public class AtlasClaimView extends Fragment {
     /* Claim view model */
     private AtlasClaimViewModel viewModel;
     /* UI edit texts */
-    private EditText serverPath;
+    private EditText gatewayHostname;
     private EditText shortCode;
     private EditText alias;
     /* Edit text values */
-    private String ipPortValue;
+    private String gatewayHostnameValue;
     private String shortCodeValue;
     private String aliasValue;
 
@@ -37,14 +40,14 @@ public class AtlasClaimView extends Fragment {
         View view = inflater.inflate(R.layout.claim_gateway, container, false);
 
         Button claimButton = view.findViewById(R.id.claimButton);
-        serverPath = view.findViewById(R.id.gateway_ip_port_edit_text);
+        gatewayHostname = view.findViewById(R.id.gateway_ip_port_edit_text);
         shortCode = view.findViewById(R.id.gateway_short_code_edit_text);
         alias = view.findViewById(R.id.gateway_alias_edit_text);
 
         claimButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (serverPath.getText().toString().matches("")) {
+                if (gatewayHostname.getText().toString().matches("")) {
                     Toast.makeText(getContext(), "Enter server path", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -56,7 +59,7 @@ public class AtlasClaimView extends Fragment {
                     Toast.makeText(getContext(), "Enter alias", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                ipPortValue = serverPath.getText().toString();
+                gatewayHostnameValue = gatewayHostname.getText().toString();
                 shortCodeValue = shortCode.getText().toString();
                 aliasValue = alias.getText().toString();
 
@@ -78,7 +81,7 @@ public class AtlasClaimView extends Fragment {
 
                 if (aliasValid) {
                     Log.d(AtlasClaimView.class.getName(), "Alias value is valid. Claiming the gateway now...");
-                    viewModel.claimGateway(ipPortValue, shortCodeValue, aliasValue);
+                    viewModel.claimGateway(gatewayHostnameValue, shortCodeValue, aliasValue);
                 } else {
                     Log.d(AtlasClaimView.class.getName(), "Alias value is not valid");
                 }
@@ -91,7 +94,7 @@ public class AtlasClaimView extends Fragment {
                 Log.d(AtlasClaimView.class.getName(), "Claim status value changed from view model");
 
                 /* Clear UI edit texts */
-                serverPath.getText().clear();
+                gatewayHostname.getText().clear();
                 shortCode.getText().clear();
                 alias.getText().clear();
 

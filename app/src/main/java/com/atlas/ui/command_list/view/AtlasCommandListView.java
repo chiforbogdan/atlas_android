@@ -109,10 +109,12 @@ public class AtlasCommandListView extends Fragment {
             public void onChanged(List<AtlasCommand> atlasCommands) {
                 Log.d(AtlasCommandListView.class.getName(), "Command list changed!");
                 if (atlasCommands != null) {
-
                     /* Set approve&reject buttons visible for the first command */
-                    if (!atlasCommands.isEmpty())
+                    if (!atlasCommands.isEmpty()) {
                         atlasCommands.get(0).setActionButtonDisplayed(true);
+                    } else {
+                        getParentFragmentManager().popBackStack();
+                    }
 
                     binding.setIsLoading(false);
                     atlasCommandListAdapter.setCommandList(atlasCommands);
@@ -139,7 +141,6 @@ public class AtlasCommandListView extends Fragment {
     }
 
     public static AtlasCommandListView getInstance(String clientIdentity) {
-
         Log.w(AtlasCommandListView.class.getName(), "Get command list fragment for client:" + clientIdentity);
         AtlasCommandListView fragment = new AtlasCommandListView();
         Bundle args = new Bundle();

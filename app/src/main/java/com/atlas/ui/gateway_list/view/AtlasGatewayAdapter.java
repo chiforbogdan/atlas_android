@@ -75,6 +75,7 @@ public class AtlasGatewayAdapter extends RecyclerView.Adapter<AtlasGatewayAdapte
 
         holder.binding.setGateway(gateway);
         holder.binding.executePendingBindings();
+        holder.itemView.setEnabled(gateway.getPendingCommands() > 0);
     }
 
     @Override

@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
+import com.atlas.BuildConfig;
 import com.atlas.database.AtlasDatabase;
 import com.atlas.model.database.AtlasClient;
 import com.atlas.model.database.AtlasCommand;
@@ -25,7 +26,6 @@ import java.util.Map;
 import retrofit2.Response;
 
 import static com.atlas.utils.AtlasConstants.ATLAS_CLIENT_COMMANDS_BROADCAST;
-import static com.atlas.utils.AtlasConstants.ATLAS_CLOUD_BASE_URL;
 
 public class AtlasCommandWorker extends Worker {
     public AtlasCommandWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
@@ -41,7 +41,7 @@ public class AtlasCommandWorker extends Worker {
             String ownerID = AtlasSharedPreferences.getInstance(getApplicationContext()).getOwnerID();
             Log.d(AtlasCommandWorker.class.getName(), "Get commands for owner " + ownerID);
 
-            AtlasClientCommandAPI clientCommandAPI = AtlasNetworkAPIFactory.createClientCommandAPI(ATLAS_CLOUD_BASE_URL);
+            AtlasClientCommandAPI clientCommandAPI = AtlasNetworkAPIFactory.createClientCommandAPI(BuildConfig.ATLAS_CLOUD_BASE_URL);
             Response<Map<String, List<AtlasClientCommandsResp>>> response = clientCommandAPI
                     .getClientCommands(ownerID)
                     .execute();
@@ -97,6 +97,11 @@ public class AtlasCommandWorker extends Worker {
                     clientId = AtlasDatabase.getInstance(getApplicationContext()).clientDao().insertClient(client);
                 } else {
                     clientId = client.getId();
+                    /* If client alias changed, update it locally */
+                    if (!client.getAlias().equalsIgnoreCase(command.getClientAlias())) {
+                        client.setAlias(command.getClientAlias());
+                        AtlasDatabase.getInstance(getApplicationContext()).clientDao().updateClient(client);
+                    }
                 }
 
                 /* Verify if command exists. If not create command. */

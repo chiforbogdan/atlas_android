@@ -13,6 +13,6 @@ public interface AtlasConstants {
     /* Broadcast receiver */
     public static final String ATLAS_CLIENT_COMMANDS_BROADCAST = "ATLAS.CLIENT_COMMANDS_BROADCAST";
 
-    /* Cloud base URL */
-    public static final String ATLAS_CLOUD_BASE_URL = "http://192.168.0.20:10000";
+    /* Time interval to execute command worker task (fetch pending commands from cloud) */
+    public static final int ATLAS_COMMAND_WORKER_TIME_MIN = 15;
 }

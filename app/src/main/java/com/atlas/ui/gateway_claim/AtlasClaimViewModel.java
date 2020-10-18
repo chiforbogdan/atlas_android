@@ -1,6 +1,8 @@
 package com.atlas.ui.gateway_claim;
 
 import android.app.Application;
+
+import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 import android.util.Log;
 
@@ -8,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
+import com.atlas.BuildConfig;
 import com.atlas.database.AtlasDatabase;
 import com.atlas.model.database.AtlasGateway;
 import com.atlas.model.dto.AtlasGatewayClaimReq;
@@ -60,26 +63,30 @@ public class AtlasClaimViewModel extends AndroidViewModel {
         });
     }
 
-    public void claimGateway(final String ipPort, final String shortCode, final String alias) {
+    private String generateSecretKey() throws NoSuchAlgorithmException {
+        /* Generate gateway secret key */
+        SecureRandom secureRandom = new SecureRandom();
+        KeyGenerator keyGenerator = KeyGenerator.getInstance("AES");
+        keyGenerator.init(ATLAS_GATEWAY_SECRET_KEY_SIZE_BITS, secureRandom);
+        SecretKey secretKey = KeyGenerator.getInstance("AES").generateKey();
+
+        return Base64.getEncoder().encodeToString(secretKey.getEncoded());
+    }
+
+    public void claimGateway(final String gatewayHostnameValue, final String shortCode, final String alias) {
         Log.d(AtlasClaimViewModel.class.getName(), "Start gateway claim process!");
 
         new CompletableFuture<Boolean>().supplyAsync(() -> {
             String ownerID = AtlasSharedPreferences.getInstance(getApplication()).getOwnerID();
-            final String url = ATLAS_GATEWAY_HTTPS_SCHEMA + ipPort + "/";
+            final String url = ATLAS_GATEWAY_HTTPS_SCHEMA + gatewayHostnameValue + ":" + BuildConfig.ATLAS_GATEWAY_CLAIM_PORT + "/";
             Log.d(AtlasClaimViewModel.class.getName(), "Execute claim request to URL:" + url);
 
             try {
                 /* Execute REST API request to gateway */
                 AtlasGatewayClaimAPI gatewayClaimAPI = AtlasNetworkAPIFactory.createGatewayClaimAPI(url);
 
-                /* Generate gateway secret key */
-                SecureRandom secureRandom = new SecureRandom();
-                KeyGenerator keyGenerator = KeyGenerator.getInstance("AES");
-                keyGenerator.init(ATLAS_GATEWAY_SECRET_KEY_SIZE_BITS, secureRandom);
-                SecretKey secretKey = KeyGenerator.getInstance("AES").generateKey();
-                String encodedKey = Base64.getEncoder().encodeToString(secretKey.getEncoded());
-
-                AtlasGatewayClaimReq claimReq = new AtlasGatewayClaimReq(shortCode, encodedKey, ownerID);
+                String secretKey = generateSecretKey();
+                AtlasGatewayClaimReq claimReq = new AtlasGatewayClaimReq(shortCode, secretKey, ownerID);
                 Response<AtlasGatewayClaimResp> claimResp = gatewayClaimAPI.claimGateway(claimReq).execute();
                 if (!claimResp.isSuccessful()) {
                     Log.e(AtlasClaimViewModel.class.getName(), "Gateway claim REST API is not successful");
@@ -90,7 +97,7 @@ public class AtlasClaimViewModel extends AndroidViewModel {
                 AtlasGateway gateway = new AtlasGateway();
                 gateway.setIdentity(claimResp.body().getIdentity());
                 gateway.setAlias(alias);
-                gateway.setSecretKey(encodedKey);
+                gateway.setSecretKey(secretKey);
                 // TODO if gateway exists, secret key should be updated
                 AtlasDatabase.getInstance(getApplication().getApplicationContext()).gatewayDao().insertGateway(gateway);
 

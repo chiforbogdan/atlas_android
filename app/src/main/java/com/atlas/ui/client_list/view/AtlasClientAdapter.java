@@ -76,13 +76,13 @@ public class AtlasClientAdapter extends RecyclerView.Adapter<AtlasClientAdapter.
 
         holder.binding.setClient(client);
         holder.binding.executePendingBindings();
+        holder.itemView.setEnabled(client.getPendingCommands() > 0);
     }
 
     @Override
     public int getItemCount() {
         return clientList == null ? 0 : clientList.size();
     }
-
 
     public static class ClientViewHolder extends RecyclerView.ViewHolder {
 

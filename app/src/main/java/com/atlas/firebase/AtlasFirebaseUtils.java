@@ -7,6 +7,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.atlas.BuildConfig;
 import com.atlas.model.dto.AtlasOwnerFirebase;
 import com.atlas.networking.AtlasFirebaseAPI;
 import com.atlas.networking.AtlasNetworkAPIFactory;
@@ -23,8 +24,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static com.atlas.utils.AtlasConstants.ATLAS_CLOUD_BASE_URL;
-
 public class AtlasFirebaseUtils {
     public static Boolean updateFirebaseTokenToCloud(@NotNull Context context) {
         String firebaseToken = AtlasSharedPreferences.getInstance(context).getFirebaseToken();
@@ -34,7 +33,7 @@ public class AtlasFirebaseUtils {
             String ownerID = AtlasSharedPreferences.getInstance(context).getOwnerID();
             AtlasOwnerFirebase ownerFirebase = new AtlasOwnerFirebase(firebaseToken);
             /* Update firebase token to cloud service */
-            AtlasFirebaseAPI firebaseAPI = AtlasNetworkAPIFactory.createFirebaseAPI(ATLAS_CLOUD_BASE_URL);
+            AtlasFirebaseAPI firebaseAPI = AtlasNetworkAPIFactory.createFirebaseAPI(BuildConfig.ATLAS_CLOUD_BASE_URL);
             Response<Void> response = firebaseAPI.updateFirebaseToken(ownerID, ownerFirebase).execute();
 
             if (response.isSuccessful()) {
