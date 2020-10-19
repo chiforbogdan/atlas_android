@@ -20,6 +20,7 @@ import com.atlas.networking.AtlasNetworkAPIFactory;
 import com.atlas.utils.AtlasSharedPreferences;
 
 import java.security.SecureRandom;
+import java.util.Date;
 import java.util.concurrent.CompletableFuture;
 
 import javax.crypto.KeyGenerator;
@@ -98,6 +99,8 @@ public class AtlasClaimViewModel extends AndroidViewModel {
                 gateway.setIdentity(claimResp.body().getIdentity());
                 gateway.setAlias(alias);
                 gateway.setSecretKey(secretKey);
+                gateway.setClaimTime(new Date().toString());
+
                 // TODO if gateway exists, secret key should be updated
                 AtlasDatabase.getInstance(getApplication().getApplicationContext()).gatewayDao().insertGateway(gateway);
 

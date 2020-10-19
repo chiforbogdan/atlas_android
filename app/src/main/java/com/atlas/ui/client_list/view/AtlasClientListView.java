@@ -6,9 +6,11 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -143,8 +145,14 @@ public class AtlasClientListView extends BackStackFragment {
         @Override
         public void onCLick(AtlasClient client) {
             Log.w(this.getClass().toString(), "Click on client with identity " + client.getIdentity());
-            if (getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.STARTED)) {
-                ((MainActivity) getActivity()).openAtlasClientCommandListFragment(client);
+            if (client.getPendingCommands() > 0) {
+                if (getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.STARTED)) {
+                    ((MainActivity) getActivity()).openAtlasClientCommandListFragment(client);
+                }
+            } else {
+                Toast toast = Toast.makeText(getContext(), getString(R.string.client_list_empty_client), Toast.LENGTH_SHORT);
+                toast.setGravity(Gravity.CENTER, 0, 0);
+                toast.show();
             }
         }
     };

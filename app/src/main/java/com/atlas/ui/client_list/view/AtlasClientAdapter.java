@@ -76,7 +76,6 @@ public class AtlasClientAdapter extends RecyclerView.Adapter<AtlasClientAdapter.
 
         holder.binding.setClient(client);
         holder.binding.executePendingBindings();
-        holder.itemView.setEnabled(client.getPendingCommands() > 0);
     }
 
     @Override

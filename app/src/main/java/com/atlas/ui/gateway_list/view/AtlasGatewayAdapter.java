@@ -83,7 +83,6 @@ public class AtlasGatewayAdapter extends RecyclerView.Adapter<AtlasGatewayAdapte
     }
 
     public static class GatewayViewHolder extends RecyclerView.ViewHolder {
-
         final GatewayItemBinding binding;
 
         public GatewayViewHolder(GatewayItemBinding binding) {

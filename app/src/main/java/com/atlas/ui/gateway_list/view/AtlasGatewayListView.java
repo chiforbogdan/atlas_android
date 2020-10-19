@@ -6,9 +6,11 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -119,8 +121,14 @@ public class AtlasGatewayListView extends BackStackFragment {
         @Override
         public void onCLick(AtlasGateway gateway) {
             Log.w(this.getClass().toString(), "Click on gateway element");
-            if (getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.STARTED)) {
-                ((MainActivity) getActivity()).openAtlasClientListFragment(gateway);
+            if (gateway.getPendingCommands() > 0) {
+                if (gateway.getPendingCommands() > 0 && getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.STARTED)) {
+                    ((MainActivity) getActivity()).openAtlasClientListFragment(gateway);
+                }
+            } else {
+                Toast toast = Toast.makeText(getContext(), getString(R.string.gateway_list_empty_gateway), Toast.LENGTH_SHORT);
+                toast.setGravity(Gravity.CENTER, 0, 0);
+                toast.show();
             }
         }
     };

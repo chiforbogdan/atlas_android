@@ -97,6 +97,29 @@
                     android:layout_gravity="fill_horizontal">
 
                     <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingBottom="4dp"
+                        android:text="@string/gateway_claim_time"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/gateway_claim_time_text_view"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingBottom="2dp"
+                        android:text="@{gateway.claimTime}"
+                        android:textAlignment="center"
+                        android:textSize="13sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="fill_horizontal">
+
+                    <TextView
                         android:id="@+id/gateway_pending_commands_label_text_view"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
