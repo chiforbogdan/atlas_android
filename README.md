@@ -16,7 +16,9 @@ On the IoT data plane layer, ATLAS provides an API which can be integrated with 
 ## ATLAS Android
 ATLAS Android is a smartphone application which allows authorization/approval for IoT client commands.
 This application allows adding the owner paradigm to the ATLAS system: the administrator of the IoT network which is a separate entity from the cloud administrator. Thus, the cloud administrator may send commands to the IoT client device, which need approval from the owner.
+
 The first steps in using ATLAS Android is to claim a gateway device, which consists in sharing a secret key between the Android application and the gateway. After the gateway is claimed, it will reject any further claim attempts.
+
 If the cloud application issues a command to the IoT client, ATLAS Android will be notified using a Firebase and it will fetch all pending commands from the cloud.
 The approved/rejected commands are cryptographically signed (HMAC) using the secret key shared with the gateway at claim time. If approved, the command will be transmitted to the gateway which cryptographically validates the command and then transmits the command to the IoT client device.
 
@@ -28,11 +30,11 @@ buildConfigField("String", "ATLAS_CLOUD_BASE_URL", "\"https://192.168.0.20:8443\
 
 #### How to use it
 After installing the ATLAS Android application, the owner has to claim a gateway, using the following steps:
-* Start the gateway process and search the last claim code in the gateway log file (e.g. tail -f atlas_gateway.log | grep -i claim)
-* In the Claim tab of ATLAS Android application enter the gateway IP address or hostname, the claim code obtained at the previous step and a gateway alias (friednly name)
-After the gateway is claimed, the new information will appear in the Commands tab of the application.
-If the cloud administrator issues a command which needs owner approval, ATLAS Android will receive a notification and it will fetch all pending commands from the cloud side.
-The owner has to use the Commands tab and press either Approve or Reject for each pending command.
+* Start the gateway process and search the last claim code in the gateway log file (e.g. tail -f atlas_gateway.log | grep -i claim).
+* In the Claim tab of ATLAS Android application enter the gateway IP address or hostname, the claim code obtained at the previous step and a gateway alias (friendly name).
+* After the gateway is claimed, the new information will appear in the Commands tab of the application.
+* If the cloud administrator issues a command which needs owner approval, ATLAS Android will receive a notification and it will fetch all pending commands from the cloud side.
+* The owner has to use the Commands tab and press either Approve or Reject for each pending command.
 
 #### Authors
 ATLAS Client was developed by:
