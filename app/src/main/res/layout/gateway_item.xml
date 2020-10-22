@@ -11,7 +11,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:onClick="@{ () -> callback.onCLick(gateway)}"
         android:layout_marginLeft="3dp"
         android:layout_marginRight="3dp"
         app:cardUseCompatPadding="true">
@@ -33,6 +32,7 @@
                 android:layout_marginTop="6dp"
                 android:background="@drawable/circle"
                 android:gravity="center"
+                android:longClickable="true"
                 android:scaleType="centerInside" />
 
             <LinearLayout
@@ -41,7 +41,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
                 android:layout_toEndOf="@+id/avatar"
-                android:onClick="@{ () -> callback.onCLick(gateway)}"
+                android:longClickable="true"
+                android:onLongClick="@{ () -> callback.onLongClick(gateway)}"
+                android:onClick="@{ () -> callback.onClick(gateway)}"
                 android:orientation="horizontal">
 
                 <TextView
@@ -63,7 +65,9 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:gravity="end"
-                android:onClick="@{ () -> callback.onCLick(gateway)}"
+                android:longClickable="true"
+                android:onClick="@{ () -> callback.onClick(gateway)}"
+                android:onLongClick="@{ () -> callback.onLongClick(gateway)}"
                 android:orientation="vertical"
                 android:paddingVertical="8dp">
 

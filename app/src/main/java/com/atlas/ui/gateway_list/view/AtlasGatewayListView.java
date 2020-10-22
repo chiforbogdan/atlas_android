@@ -25,6 +25,7 @@ import androidx.recyclerview.widget.SimpleItemAnimator;
 import com.atlas.R;
 import com.atlas.databinding.FragmentListGatewaysBinding;
 import com.atlas.model.database.AtlasGateway;
+import com.atlas.ui.command_list.view.AtlasCommandListView;
 import com.atlas.ui.main.MainActivity;
 import com.atlas.ui.gateway_list.viewmodel.AtlasGatewayListViewModel;
 
@@ -107,6 +108,22 @@ public class AtlasGatewayListView extends BackStackFragment {
                 }
             }
         });
+        viewModel.getGatewayDeleteStatus().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean gatewayDeleteStatus) {
+                Log.d(AtlasCommandListView.class.getName(), "Delete gateway status changed!");
+
+                Toast toast;
+                if (gatewayDeleteStatus) {
+                    toast = Toast.makeText(getActivity(), "Gateway has been deleted successfully!", Toast.LENGTH_SHORT);
+                } else {
+                    toast = Toast.makeText(getActivity(), "An error occurred while trying to delete gateway!", Toast.LENGTH_SHORT);
+                }
+
+                toast.setGravity(Gravity.CENTER, 0, 0);
+                toast.show();
+            }
+        });
     }
 
     public void replaceFragment(Fragment fragment) {
@@ -119,8 +136,15 @@ public class AtlasGatewayListView extends BackStackFragment {
 
     private final GatewayClickCallback gatewayClickCallback = new GatewayClickCallback() {
         @Override
-        public void onCLick(AtlasGateway gateway) {
-            Log.w(this.getClass().toString(), "Click on gateway element");
+        public boolean onLongClick(AtlasGateway gateway) {
+            Log.w(this.getClass().toString(), "Long click on gateway with identity: " + gateway.getIdentity());
+            viewModel.deleteGateway(gateway);
+            return true;
+        }
+
+        @Override
+        public void onClick(AtlasGateway gateway) {
+            Log.w(this.getClass().toString(), "Click on gateway with identity: " + gateway.getIdentity());
             if (gateway.getPendingCommands() > 0) {
                 if (gateway.getPendingCommands() > 0 && getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.STARTED)) {
                     ((MainActivity) getActivity()).openAtlasClientListFragment(gateway);
