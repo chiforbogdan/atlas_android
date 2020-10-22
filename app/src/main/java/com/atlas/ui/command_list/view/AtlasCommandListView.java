@@ -23,6 +23,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.SimpleItemAnimator;
 
 import com.atlas.R;
+import com.atlas.databinding.CommandItemBinding;
 import com.atlas.databinding.FragmentListCommandsBinding;
 import com.atlas.model.database.AtlasCommand;
 import com.atlas.ui.command_list.viewmodel.AtlasCommandListViewModel;
@@ -112,6 +113,8 @@ public class AtlasCommandListView extends Fragment {
                     /* Set approve&reject buttons visible for the first command */
                     if (!atlasCommands.isEmpty()) {
                         atlasCommands.get(0).setActionButtonDisplayed(true);
+                        atlasCommands.get(0).setActionButtonsEnabled(true);
+
                     } else {
                         getParentFragmentManager().popBackStack();
                     }
@@ -132,6 +135,9 @@ public class AtlasCommandListView extends Fragment {
                     toast = Toast.makeText(getActivity(), "Command status sent successfully", Toast.LENGTH_SHORT);
                 } else {
                     toast = Toast.makeText(getActivity(), "An error occurred while trying to send command status!", Toast.LENGTH_SHORT);
+
+                    /* Enable approve&reject buttons */
+                    atlasCommandListAdapter.setActionButtonsStatus(0, true);
                 }
 
                 toast.setGravity(Gravity.CENTER, 0, 0);
@@ -155,9 +161,15 @@ public class AtlasCommandListView extends Fragment {
         public void onApproveButtonClick(AtlasCommand command) {
             try {
                 Log.d(AtlasCommandListView.class.getName(), "Command with seq. nr. " + command.getSeqNo().toString() + " is being approved!");
+
+                /* Disable approve&reject buttons */
+                atlasCommandListAdapter.setActionButtonsStatus(0, false);
+
                 viewModel.sendCommandStatus(command, true);
             } catch (Exception e) {
+                atlasCommandListAdapter.setActionButtonsStatus(0, true);
                 e.printStackTrace();
+
             }
         }
 
@@ -165,6 +177,10 @@ public class AtlasCommandListView extends Fragment {
         public void onRejectButtonClick(AtlasCommand command) {
             try {
                 Log.d(AtlasCommandListView.class.getName(), "Command with seq. nr. " + command.getSeqNo().toString() + " is being rejected!");
+
+                /* Disable approve&reject buttons */
+                atlasCommandListAdapter.setActionButtonsStatus(0, false);
+
                 viewModel.sendCommandStatus(command, false);
             } catch (Exception e) {
                 e.printStackTrace();

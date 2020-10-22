@@ -36,6 +36,9 @@ public class AtlasCommand {
     @Ignore
     private Boolean actionButtonDisplayed;
 
+    @Ignore
+    private Boolean actionButtonsEnabled;
+
     public Long getId() {
         return id;
     }
@@ -92,5 +95,15 @@ public class AtlasCommand {
     @Ignore
     public void setActionButtonDisplayed(Boolean actionButtonDisplayed) {
         this.actionButtonDisplayed = actionButtonDisplayed;
+    }
+
+    @Ignore
+    public Boolean getActionButtonsEnabled() {
+        return actionButtonsEnabled;
+    }
+
+    @Ignore
+    public void setActionButtonsEnabled(Boolean actionButtonsEnabled) {
+        this.actionButtonsEnabled = actionButtonsEnabled;
     }
 }

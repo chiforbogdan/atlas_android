@@ -24,6 +24,11 @@ public class AtlasCommandListAdapter extends RecyclerView.Adapter<AtlasCommandLi
         this.commandApproveCallback = commandApproveCallback;
     }
 
+    public void setActionButtonsStatus(int index, Boolean status) {
+        commandList.get(index).setActionButtonsEnabled(status);
+        notifyItemChanged(index);
+    }
+
     public void setCommandList(final List<AtlasCommand> commandList) {
         if (this.commandList == null) {
             this.commandList = commandList;
@@ -52,7 +57,8 @@ public class AtlasCommandListAdapter extends RecyclerView.Adapter<AtlasCommandLi
                     AtlasCommand oldCommand = AtlasCommandListAdapter.this.commandList.get(oldItemPosition);
                     return oldCommand.getSeqNo().equals(newCommand.getSeqNo())
                             && oldCommand.getId().equals(newCommand.getId())
-                            && oldCommand.getActionButtonDisplayed() == newCommand.getActionButtonDisplayed();
+                            && oldCommand.getActionButtonDisplayed() == newCommand.getActionButtonDisplayed()
+                            && oldCommand.getActionButtonsEnabled() == newCommand.getActionButtonsEnabled();
                 }
             });
 

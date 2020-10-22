@@ -147,6 +147,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="3dp"
                         android:text="Approve"
+                        android:enabled="@{command.actionButtonsEnabled}"
                         app:visibility="@{command.actionButtonDisplayed? View.VISIBLE : View.GONE }"
                         android:onClick="@{ () -> callback.onApproveButtonClick(command)}" />
 
@@ -155,6 +156,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Reject"
+                        android:enabled="@{command.actionButtonsEnabled }"
                         app:visibility="@{command.actionButtonDisplayed? View.VISIBLE : View.GONE }"
                         android:onClick="@{ () -> callback.onRejectButtonClick(command)}" />
 
