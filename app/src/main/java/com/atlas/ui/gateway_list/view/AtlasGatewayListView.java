@@ -2,6 +2,7 @@ package com.atlas.ui.gateway_list.view;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
@@ -26,8 +28,8 @@ import com.atlas.R;
 import com.atlas.databinding.FragmentListGatewaysBinding;
 import com.atlas.model.database.AtlasGateway;
 import com.atlas.ui.command_list.view.AtlasCommandListView;
-import com.atlas.ui.main.MainActivity;
 import com.atlas.ui.gateway_list.viewmodel.AtlasGatewayListViewModel;
+import com.atlas.ui.main.MainActivity;
 
 import java.util.List;
 
@@ -138,7 +140,19 @@ public class AtlasGatewayListView extends BackStackFragment {
         @Override
         public boolean onLongClick(AtlasGateway gateway) {
             Log.w(this.getClass().toString(), "Long click on gateway with identity: " + gateway.getIdentity());
-            viewModel.deleteGateway(gateway);
+            new AlertDialog.Builder(getContext())
+                    .setTitle("Delete gateway")
+                    .setMessage("Are you sure you want to delete this gateway?")
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            viewModel.deleteGateway(gateway);
+                        }
+                    })
+                    .setNegativeButton("No", null)
+                    .setIcon(R.drawable.ic_baseline_warning_24)
+                    .show();
+
             return true;
         }
 
