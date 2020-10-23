@@ -11,6 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.atlas.BuildConfig;
 import com.atlas.R;
 import com.atlas.ui.main.MainActivity;
 import com.atlas.utils.AtlasConstants;
@@ -21,7 +22,7 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         TextView versionText = new TextView(this);
-        versionText.setText("Version " + AtlasConstants.ATLAS_ANDROID_APPLICATION_VERSION);
+        versionText.setText("Version " + BuildConfig.VERSION_NAME);
         versionText.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
         versionText.setGravity(Gravity.CENTER | Gravity.BOTTOM);
         versionText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);

@@ -3,15 +3,19 @@ package com.atlas.ui.gateway_claim;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.URLUtil;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.atlas.BuildConfig;
 import com.atlas.R;
 import com.atlas.ui.main.MainActivity;
+import com.atlas.utils.AtlasConstants;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -47,8 +51,8 @@ public class AtlasClaimView extends Fragment {
         claimButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (gatewayHostname.getText().toString().matches("")) {
-                    Toast.makeText(getContext(), "Enter server path", Toast.LENGTH_SHORT).show();
+                if (!Patterns.IP_ADDRESS.matcher(gatewayHostname.getText().toString()).matches()) {
+                    Toast.makeText(getContext(), "Gateway IP address is not valid!", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 if (shortCode.getText().toString().matches("")) {
@@ -98,7 +102,7 @@ public class AtlasClaimView extends Fragment {
                 shortCode.getText().clear();
                 alias.getText().clear();
 
-                /* Show alert dialog with gateway claim operation status */
+                /* Show alert dialog with gateway atlas_claim operation status */
                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(AtlasClaimView.this.getContext());
                 alertDialogBuilder.setMessage(claimStatus ? R.string.gateway_claim_success : R.string.gateway_claim_error);
                 alertDialogBuilder.setPositiveButton(R.string.gateway_claim_button_ok, null);

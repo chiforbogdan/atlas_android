@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">ATLAS IoT</string>
     <string name="gateway_claim_title">Claim gateway</string>
-    <string name="gateway_claim_hint_ip">Insert gateway hostname/IP address</string>
+    <string name="gateway_claim_hint_ip">Insert gateway IP address</string>
     <string name="gateway_claim_hint_code">Insert code</string>
     <string name="gateway_claim_hint_alias">Insert alias</string>
     <string name="gateway_claim_button">Claim</string>
@@ -32,6 +32,7 @@
 
     <string name="home_total_commands_waiting">Commands are waiting to be approved</string>
     <string name="home_total_command_waiting">Command is waiting to be approved</string>
+    <string name="home_see_commands_button">See commands</string>
 
     <string name="main_home_tab_title">Home</string>
     <string name="main_claim_tab_title">Claim</string>

@@ -17,6 +17,7 @@ import com.atlas.model.dto.AtlasGatewayClaimReq;
 import com.atlas.model.dto.AtlasGatewayClaimResp;
 import com.atlas.networking.AtlasGatewayClaimAPI;
 import com.atlas.networking.AtlasNetworkAPIFactory;
+import com.atlas.utils.AtlasConstants;
 import com.atlas.utils.AtlasSharedPreferences;
 
 import java.security.SecureRandom;
@@ -31,7 +32,6 @@ import retrofit2.Response;
 import static com.atlas.utils.AtlasConstants.ATLAS_GATEWAY_SECRET_KEY_SIZE_BITS;
 
 public class AtlasClaimViewModel extends AndroidViewModel {
-    private static final String ATLAS_GATEWAY_HTTPS_SCHEMA = "https://";
     /* Indicates if the gateway alias is valid */
     private MutableLiveData<Boolean> aliasLiveData = new MutableLiveData<>();
 
@@ -79,7 +79,7 @@ public class AtlasClaimViewModel extends AndroidViewModel {
 
         new CompletableFuture<Boolean>().supplyAsync(() -> {
             String ownerID = AtlasSharedPreferences.getInstance(getApplication()).getOwnerID();
-            final String url = ATLAS_GATEWAY_HTTPS_SCHEMA + gatewayHostnameValue + ":" + BuildConfig.ATLAS_GATEWAY_CLAIM_PORT + "/";
+            final String url = AtlasConstants.ATLAS_GATEWAY_HTTPS_SCHEMA + gatewayHostnameValue + ":" + BuildConfig.ATLAS_GATEWAY_CLAIM_PORT + "/";
             Log.d(AtlasClaimViewModel.class.getName(), "Execute claim request to URL:" + url);
 
             try {

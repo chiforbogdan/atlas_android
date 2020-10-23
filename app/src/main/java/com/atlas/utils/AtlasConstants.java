@@ -10,6 +10,8 @@ public interface AtlasConstants {
     public static final String ATLAS_HMAC_ALGO = "HmacSHA512";
     public static int ATLAS_GATEWAY_SECRET_KEY_SIZE_BITS = 256;
 
+    public static final String ATLAS_GATEWAY_HTTPS_SCHEMA = "https://";
+
     /* Broadcast receiver */
     public static final String ATLAS_CLIENT_COMMANDS_BROADCAST = "ATLAS.CLIENT_COMMANDS_BROADCAST";
 
@@ -18,7 +20,4 @@ public interface AtlasConstants {
 
     /* Time interval in which splash screen is displayed */
     public static final int ATLAS_SPLASH_DISPLAY_TIME = 1000;
-
-    /* Atlas Android Version */
-    public static final int ATLAS_ANDROID_APPLICATION_VERSION = 1;
 }

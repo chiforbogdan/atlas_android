@@ -35,27 +35,26 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/space"
+            android:layout_centerHorizontal="true"
             android:gravity="center"
             android:text="@string/home_total_commands_waiting"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textSize="25sp" />
 
         <Button
-            style="@style/goCommandsButton"
+            android:background="@drawable/button"
+            android:textColor="@color/white"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
             android:layout_centerInParent="true"
             android:layout_centerHorizontal="true"
             android:layout_gravity="center"
             android:layout_marginBottom="10dp"
-            android:drawableEnd="@drawable/ic_baseline_fast_forward_24"
-            android:drawablePadding="6dp"
             android:gravity="center"
             android:onClick="@{ () -> callback.onClick() }"
             android:paddingStart="40dp"
             android:paddingEnd="40dp"
-            android:text="See commands"
+            android:text="@string/home_see_commands_button"
             android:textSize="14sp" />
 
     </RelativeLayout>
