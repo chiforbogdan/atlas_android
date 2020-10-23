@@ -23,7 +23,7 @@
 
     <string name="command_list_title">Command list</string>
     <string name="command_loading">Command list is loading …</string>
-    <string name="command_sequence_number">Seq. Nr: </string>
+    <string name="command_sequence_number">Seq. Nr.: </string>
     <string name="command_payload">Payload: </string>
     <string name="command_client_identity">Client identity: </string>
     <string name="command_create_time">Create time: </string>
@@ -37,4 +37,7 @@
     <string name="main_home_tab_title">Home</string>
     <string name="main_claim_tab_title">Claim</string>
     <string name="main_commands_tab_title">Commands</string>
+
+    <string name="notification_title">ATLAS IoT commands</string>
+    <string name="notification_text">New commands fetched from cloud</string>
 </resources>

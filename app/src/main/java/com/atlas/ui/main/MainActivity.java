@@ -1,5 +1,8 @@
 package com.atlas.ui.main;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -13,6 +16,7 @@ import com.atlas.ui.command_list.view.AtlasCommandListView;
 import com.atlas.ui.gateway_claim.AtlasClaimView;
 import com.atlas.ui.gateway_list.view.AtlasGatewayListView;
 import com.atlas.ui.gateway_list.view.BackStackFragment;
+import com.atlas.utils.AtlasConstants;
 import com.atlas.utils.AtlasSharedPreferences;
 import com.atlas.worker.AtlasCommandWorker;
 import com.atlas.worker.AtlasFirebaseWorker;
@@ -62,6 +66,10 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.getTabAt(0).setIcon(R.drawable.ic_baseline_home_24);
         tabLayout.getTabAt(1).setIcon(R.drawable.ic_baseline_edit_24);
         tabLayout.getTabAt(2).setIcon(R.drawable.ic_outline_ballot_24);
+
+        /* Notification setup */
+        NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        manager.createNotificationChannel(new NotificationChannel(AtlasConstants.ATLAS_NOTIFICATION_CHANNEL_ID, AtlasConstants.ATLAS_NOTIFICATION_CHANNEL_NAME, NotificationManager.IMPORTANCE_HIGH));
     }
 
     @Override

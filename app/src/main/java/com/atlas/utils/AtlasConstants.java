@@ -20,4 +20,8 @@ public interface AtlasConstants {
 
     /* Time interval in which splash screen is displayed */
     public static final int ATLAS_SPLASH_DISPLAY_TIME = 1000;
+
+    /* Notifications */
+    public static final String ATLAS_NOTIFICATION_CHANNEL_ID = "ATLAS_NOTIFICATION_CHANNEL_ID";
+    public static final String ATLAS_NOTIFICATION_CHANNEL_NAME = "ATLAS_NOTIFICATION_CHANNEL_NAME";
 }
