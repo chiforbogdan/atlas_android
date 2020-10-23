@@ -5,38 +5,40 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
-
-import com.atlas.R;
-import com.atlas.ui.home.viewmodel.HomeViewModel;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+
+import com.atlas.R;
+import com.atlas.databinding.HomeBinding;
+import com.atlas.ui.home.viewmodel.HomeViewModel;
+import com.google.android.material.tabs.TabLayout;
 
 import static com.atlas.utils.AtlasConstants.ATLAS_CLIENT_COMMANDS_BROADCAST;
 
 public class Home extends Fragment {
 
+    private HomeBinding binding;
     private HomeViewModel viewModel;
-    private TextView pendingCommands;
-    private TextView pendingCommandsLabel;
     private BroadcastReceiver commandsReceiver;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.home, container, false);
 
-        pendingCommands = view.findViewById(R.id.total_pending_commands_text_view);
-        pendingCommandsLabel = view.findViewById(R.id.total_pending_commands_label_text_view);
+        binding = DataBindingUtil.inflate(inflater, R.layout.home, container, false);
+        binding.setCallback(callback);
         viewModel = new ViewModelProvider(this).get(HomeViewModel.class);
+
         observeListViewModel();
 
-        return view;
+        return binding.getRoot();
     }
 
     @Override
@@ -76,14 +78,23 @@ public class Home extends Fragment {
             @Override
             public void onChanged(Long totalPendingCommands) {
                 if (totalPendingCommands != null) {
-                    pendingCommands.setText(totalPendingCommands.toString());
+                    binding.totalPendingCommandsTextView.setText(totalPendingCommands.toString());
                     if (totalPendingCommands == 1) {
-                        pendingCommandsLabel.setText(R.string.home_total_command_waiting);
+                        binding.totalPendingCommandsLabelTextView.setText(R.string.home_total_command_waiting);
                     } else {
-                        pendingCommandsLabel.setText(R.string.home_total_commands_waiting);
+                        binding.totalPendingCommandsLabelTextView.setText(R.string.home_total_commands_waiting);
                     }
                 }
             }
         });
     }
+
+    private final OpenCommandListCallback callback = new OpenCommandListCallback() {
+        @Override
+        public void onClick() {
+            Log.w(Home.class.toString(), "Click on open commands!");
+            TabLayout tabs = getActivity().findViewById(R.id.tabLayout);
+            tabs.getTabAt(2).select();
+        }
+    };
 }
