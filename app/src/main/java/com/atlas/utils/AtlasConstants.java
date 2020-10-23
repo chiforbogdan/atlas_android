@@ -15,4 +15,10 @@ public interface AtlasConstants {
 
     /* Time interval to execute command worker task (fetch pending commands from cloud) */
     public static final int ATLAS_COMMAND_WORKER_TIME_MIN = 15;
+
+    /* Time interval in which splash screen is displayed */
+    public static final int ATLAS_SPLASH_DISPLAY_TIME = 1000;
+
+    /* Atlas Android Version */
+    public static final int ATLAS_ANDROID_APPLICATION_VERSION = 1;
 }
