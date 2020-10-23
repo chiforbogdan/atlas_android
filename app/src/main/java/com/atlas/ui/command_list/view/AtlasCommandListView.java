@@ -104,6 +104,12 @@ public class AtlasCommandListView extends Fragment {
         }
     }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(getString(R.string.client_list_title));
+    }
+
     private void observeListViewModel(AtlasCommandListViewModel viewModel) {
         viewModel.getCommandList().observe(getViewLifecycleOwner(), new Observer<List<AtlasCommand>>() {
             @Override

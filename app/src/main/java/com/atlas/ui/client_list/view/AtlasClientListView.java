@@ -141,6 +141,12 @@ public class AtlasClientListView extends BackStackFragment {
                 .commit();
     }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(getString(R.string.gateway_list_title));
+    }
+
     private final ClientClickCallback clientClickCallback = new ClientClickCallback() {
         @Override
         public void onCLick(AtlasClient client) {
