@@ -10,15 +10,16 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:layout_marginLeft="3dp"
         android:layout_marginRight="3dp"
+        android:onClick="@{ () -> callback.onClick(gateway)}"
+        android:orientation="horizontal"
         app:cardUseCompatPadding="true">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#ffffff"
+            android:background="?android:attr/selectableItemBackground"
             android:clipToPadding="false"
             android:paddingVertical="3dp"
             android:paddingStart="5dp"
@@ -26,11 +27,11 @@
 
             <View
                 android:id="@+id/avatar"
-                android:layout_width="15dp"
-                android:layout_height="15dp"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
                 android:layout_alignParentStart="true"
                 android:layout_marginTop="6dp"
-                android:background="@drawable/circle"
+                android:background="@drawable/ic_atlas_gateway_24"
                 android:gravity="center"
                 android:longClickable="true"
                 android:scaleType="centerInside" />
@@ -40,10 +41,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
+                android:layout_marginTop="6dp"
                 android:layout_toEndOf="@+id/avatar"
                 android:longClickable="true"
-                android:onLongClick="@{ () -> callback.onLongClick(gateway)}"
                 android:onClick="@{ () -> callback.onClick(gateway)}"
+                android:onLongClick="@{ () -> callback.onLongClick(gateway)}"
                 android:orientation="horizontal">
 
                 <TextView
@@ -89,6 +91,7 @@
                         android:id="@+id/gateway_identity_text_view"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:paddingStart="2dp"
                         android:paddingBottom="2dp"
                         android:text="@{gateway.identity}"
                         android:textAlignment="center"
@@ -112,6 +115,7 @@
                         android:id="@+id/gateway_claim_time_text_view"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:paddingStart="2dp"
                         android:paddingBottom="2dp"
                         android:text="@{gateway.claimTime}"
                         android:textAlignment="center"
@@ -136,6 +140,7 @@
                         android:id="@+id/gateway_pending_commands_text_view"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:paddingStart="2dp"
                         android:paddingBottom="2dp"
                         android:text="@{gateway.pendingCommands.toString()}"
                         android:textAlignment="center"
