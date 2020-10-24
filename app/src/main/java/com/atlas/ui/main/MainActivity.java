@@ -5,6 +5,8 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import com.atlas.R;
 import com.atlas.firebase.AtlasFirebaseUtils;
@@ -73,9 +75,29 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.force_sync_commands) {
+            Log.d(MainActivity.class.getName(), "Force sync commands");
+            fetchCommandsFromCloud();
+        }
+
+        return(super.onOptionsItemSelected(item));
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
         /* Fetch commands from cloud */
+        fetchCommandsFromCloud();
+    }
+
+    private void fetchCommandsFromCloud() {
         PeriodicWorkRequest commandWorker = new PeriodicWorkRequest.Builder(AtlasCommandWorker.class, ATLAS_COMMAND_WORKER_TIME_MIN, TimeUnit.MINUTES)
                 .setBackoffCriteria(BackoffPolicy.LINEAR, Duration.ofMinutes(1))
                 .build();

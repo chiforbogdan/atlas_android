@@ -40,4 +40,6 @@
 
     <string name="notification_title">ATLAS IoT commands</string>
     <string name="notification_text">New commands fetched from cloud</string>
+
+    <string name="menu_force_sync_commands">Force sync commands</string>
 </resources>
