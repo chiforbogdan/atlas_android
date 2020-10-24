@@ -41,9 +41,17 @@
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textSize="25sp" />
 
+        <Space
+            android:id="@+id/space2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/total_pending_commands_label_text_view"
+            android:minHeight="20dp" />
+
         <Button
             android:background="@drawable/button"
             android:textColor="@color/white"
+            android:layout_below="@id/space2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"

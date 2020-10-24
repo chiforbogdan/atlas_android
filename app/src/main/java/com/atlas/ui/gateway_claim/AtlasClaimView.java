@@ -115,6 +115,6 @@ public class AtlasClaimView extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Connect gateway");
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(getString(R.string.gateway_claim_title));
     }
 }
