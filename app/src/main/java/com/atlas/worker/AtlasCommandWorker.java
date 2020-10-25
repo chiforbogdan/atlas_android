@@ -53,7 +53,7 @@ public class AtlasCommandWorker extends Worker {
             String ownerID = AtlasSharedPreferences.getInstance(getApplicationContext()).getOwnerID();
             Log.d(AtlasCommandWorker.class.getName(), "Get commands for owner " + ownerID);
 
-            AtlasClientCommandAPI clientCommandAPI = AtlasNetworkAPIFactory.createClientCommandAPI(BuildConfig.ATLAS_CLOUD_BASE_URL);
+            AtlasClientCommandAPI clientCommandAPI = AtlasNetworkAPIFactory.createClientCommandAPI(BuildConfig.ATLAS_CLOUD_BASE_URL + ":" + BuildConfig.ATLAS_CLOUD_PORT);
             Response<Map<String, List<AtlasClientCommandsResp>>> response = clientCommandAPI
                     .getClientCommands(ownerID)
                     .execute();

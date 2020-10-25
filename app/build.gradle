@@ -14,7 +14,9 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         // Build Parameters
-        buildConfigField("String", "ATLAS_CLOUD_BASE_URL", "\"http://192.168.0.25:10000\"")
+        buildConfigField("String", "ATLAS_CLOUD_BASE_URL", "\"https://192.168.0.28\"")
+        // This port is used on the cloud side (when deployed in a Tomcat server)
+        buildConfigField("Integer", "ATLAS_CLOUD_PORT", "8888")
         buildConfigField("Integer", "ATLAS_GATEWAY_CLAIM_PORT", "3333")
     }
 

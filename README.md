@@ -23,9 +23,10 @@ If the cloud application issues a command to the IoT client, ATLAS Android will 
 The approved/rejected commands are cryptographically signed (HMAC) using the secret key shared with the gateway at claim time. If approved, the command will be transmitted to the gateway which cryptographically validates the command and then transmits the command to the IoT client device.
 
 #### How to build it
-ATLAS Android can be build using Android Studio. Before building the application, the ATLAS_CLOUD_BASE_URL parameter has to be configured in the build.gradle file in order to point to the cloud web application:
+ATLAS Android can be build using Android Studio. Before building the application, the ATLAS_CLOUD_BASE_URL and ATLAS_CLOUD_PORT parameters have to be configured in the build.gradle file in order to point to the cloud web application:
 ```
-buildConfigField("String", "ATLAS_CLOUD_BASE_URL", "\"https://192.168.0.20:8443\"")
+buildConfigField("String", "ATLAS_CLOUD_BASE_URL", "\"https://192.168.0.20\"")
+buildConfigField("Integer", "ATLAS_CLOUD_PORT", "8888")
 ```
 
 #### How to use it

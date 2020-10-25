@@ -33,7 +33,7 @@ public class AtlasFirebaseUtils {
             String ownerID = AtlasSharedPreferences.getInstance(context).getOwnerID();
             AtlasOwnerFirebase ownerFirebase = new AtlasOwnerFirebase(firebaseToken);
             /* Update firebase token to cloud service */
-            AtlasFirebaseAPI firebaseAPI = AtlasNetworkAPIFactory.createFirebaseAPI(BuildConfig.ATLAS_CLOUD_BASE_URL);
+            AtlasFirebaseAPI firebaseAPI = AtlasNetworkAPIFactory.createFirebaseAPI(BuildConfig.ATLAS_CLOUD_BASE_URL + ":" + BuildConfig.ATLAS_CLOUD_PORT);
             Response<Void> response = firebaseAPI.updateFirebaseToken(ownerID, ownerFirebase).execute();
 
             if (response.isSuccessful()) {

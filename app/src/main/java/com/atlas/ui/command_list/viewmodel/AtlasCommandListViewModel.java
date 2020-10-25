@@ -114,7 +114,7 @@ public class AtlasCommandListViewModel extends AndroidViewModel {
             Log.d(AtlasCommandListViewModel.class.getName(), "Approve command seq.nr. " + String.valueOf(command.getSeqNo()) + " for " + ownerID + " with signature:" + signature);
 
             AtlasOwnerCommandReq ownerCommandReq = new AtlasOwnerCommandReq(gateway.getIdentity(), clientIdentity, command.getSeqNo().intValue(), commandStatus, signature);
-            AtlasClientCommandAPI clientCommandAPI = AtlasNetworkAPIFactory.createClientCommandAPI(BuildConfig.ATLAS_CLOUD_BASE_URL);
+            AtlasClientCommandAPI clientCommandAPI = AtlasNetworkAPIFactory.createClientCommandAPI(BuildConfig.ATLAS_CLOUD_BASE_URL + ":" + BuildConfig.ATLAS_CLOUD_PORT);
             Response<ResponseBody> response = clientCommandAPI.sendCommandStatus(ownerID, ownerCommandReq).execute();
 
             if (!response.isSuccessful()) {
